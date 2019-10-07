@@ -21,10 +21,16 @@
             "aot": false,
             "assets": [
               "projects/app/src/favicon.ico",
-              "projects/app/src/assets"
+              "projects/app/src/assets",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
-              "projects/app/src/styles.css"
+              "projects/app/src/styles.css",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
             ],
             "scripts": []
           },
@@ -238,6 +244,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "app"
 }

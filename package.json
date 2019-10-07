@@ -1,7 +1,6 @@
 {
   "name": "bili-dd-monitor",
   "version": "0.0.0",
-  "main": "main.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "electron-start": "electron ."
+    "electron-start": "tsc -p ./electron/ && electron -p ./dist/electron/src/main.js"
   },
   "private": true,
   "dependencies": {
@@ -21,9 +20,11 @@
     "@angular/platform-browser": "~8.2.9",
     "@angular/platform-browser-dynamic": "~8.2.9",
     "@angular/router": "~8.2.9",
+    "@types/socket.io-client": "^1.4.32",
     "electron": "^6.0.11",
-    "ng-zorro-antd": "^8.1.2",
+    "ngx-electron": "^2.1.1",
     "rxjs": "~6.4.0",
+    "socket.io-client": "^2.3.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
   },

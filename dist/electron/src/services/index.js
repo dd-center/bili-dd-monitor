@@ -2,8 +2,9 @@
 exports.__esModule = true;
 var vtbInfo_1 = require("./vtbInfo");
 exports.VtbInfoService = vtbInfo_1.VtbInfoService;
-var follow_1 = require("./follow");
-exports.setFollow = follow_1.setFollow;
-exports.getFollows = follow_1.getFollows;
-exports.initFollows = follow_1.initFollows;
+var followList_1 = require("./followList");
+exports.getFollowLists = followList_1.getFollowLists;
+exports.addFollowList = followList_1.addFollowList;
+exports.deleteFollowList = followList_1.deleteFollowList;
+exports.renameFollowList = followList_1.renameFollowList;
 //# sourceMappingURL=index.js.map

@@ -1,0 +1,45 @@
+<nz-layout>
+  <nz-sider nzTheme="light">
+    <div class="sider-header">
+      <nz-row [nzGutter]="16">
+        <nz-col [nzSpan]="15">
+          <p>我的关注</p>
+        </nz-col>
+        <nz-col [nzSpan]="1">
+          <a (click)="showCreateListModal()"><i nz-icon nzType="plus-circle" nzTheme="outline" font-size="16px"></i></a>
+        </nz-col>
+      </nz-row>
+    </div>
+    <ul nz-menu nzMode="inline">
+      <li nz-menu-item [routerLink]="['./list',-1]" nzMatchRouter><i nz-icon nzType="user" nzTheme="outline"></i>全部关注
+      </li>
+      <li *ngFor="let list of followLists" nz-menu-item [routerLink]="['./list',list.id]" nzMatchRouter><i nz-icon
+          nzType="solution" nzTheme="outline"></i><span>{{list.name}}</span>
+        <span nz-dropdown [nzDropdownMenu]="menu" [nzDisabled]="list.id<=0">
+          <span *ngIf="(mouseOverListId==0)||(mouseOverListId!=list.id)"
+            style="float:right; text-align:center;width: 20px"
+            (mouseenter)="mouseEnter(list.id)">{{list.mids.length}}</span>
+          <span *ngIf="(mouseOverListId!=0)&&(mouseOverListId==list.id)"
+            style="float:right; text-align:center;width: 20px;" (mouseleave)="mouseLeave()"><i nz-icon nzType="more"
+              nzTheme="outline"></i>
+          </span>
+          <nz-dropdown-menu #menu nzPlacement="bottomLeft">
+            <ul nz-menu style="width: 150px">
+              <li nz-menu-item>修改名称</li>
+              <li nz-menu-item nz-popconfirm nzPopconfirmTitle="确定要删除该分组么？删除之后，该分组下的用户依旧保留"
+                (nzOnConfirm)="handleDeleteList(list.id)">删除</li>
+            </ul>
+          </nz-dropdown-menu>
+        </span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-content class="follow-content">
+    <router-outlet></router-outlet>
+  </nz-content>
+</nz-layout>
+
+<nz-modal [(nzVisible)]="isCreateListModalVisible" nzTitle="新建分组" (nzOnCancel)="handleCreateListModalCancel()"
+  (nzOnOk)="handleCreateListModalOk(createListModalInput.value)" [nzOkLoading]="isCreateListModalOkLoading">
+  <input nz-input placeholder="最多输入10个字" [(ngModel)]="createListModalValue" #createListModalInput />
+</nz-modal>

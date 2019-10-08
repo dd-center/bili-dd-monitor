@@ -3,12 +3,12 @@ const socket = io('https://api.vtbs.moe');
 import { VtbInfo } from '../../../interfaces';
 
 export class VtbInfoService {
-    private vtbInfos: Map<number,VtbInfo> = new Map<number,VtbInfo>();
+    private vtbInfos: Map<number, VtbInfo> = new Map<number, VtbInfo>();
     private update: Function = null;
     constructor() {
         socket.on('info', (infos: VtbInfo[]) => {
-            infos.forEach((info:VtbInfo)=>{
-                this.vtbInfos.set(info.mid,info);
+            infos.forEach((info: VtbInfo) => {
+                this.vtbInfos.set(info.mid, info);
             })
             if (this.update) {
                 this.update([...this.vtbInfos.values()]);

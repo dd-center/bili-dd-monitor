@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FollowService } from './follow.service';
+import { FollowListService } from './follow-list.service';
 
-describe('FollowService', () => {
+describe('FollowListService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: FollowService = TestBed.get(FollowService);
+    const service: FollowListService = TestBed.get(FollowListService);
     expect(service).toBeTruthy();
   });
 });

@@ -10,13 +10,14 @@ import { AppRoutingModule } from './app-routing.module';
 /** 配置 angular i18n **/
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { AppLivingComponent } from './app-living/app-living.component';
-import { AppFollowComponent } from './app-follow/app-follow.component';
-import { AppVtbsComponent } from './app-vtbs/app-vtbs.component';
-import { AppDdcAppComponent } from './app-ddc-app/app-ddc-app.component';
-import { AppSettingComponent } from './app-setting/app-setting.component';
+import { AppLivingComponent } from './components/app-living/app-living.component';
+import { AppFollowComponent } from './components/app-follow/app-follow.component';
+import { AppVtbsComponent } from './components/app-vtbs/app-vtbs.component';
+import { AppDdcAppComponent } from './components/app-ddc-app/app-ddc-app.component';
+import { AppSettingComponent } from './components/app-setting/app-setting.component';
 import { NgxElectronModule } from 'ngx-electron'
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { FollowListComponent } from './components/app-follow/follow-list/follow-list.component';
 registerLocaleData(zh);
 
 @NgModule({
@@ -26,7 +27,8 @@ registerLocaleData(zh);
     AppFollowComponent,
     AppVtbsComponent,
     AppDdcAppComponent,
-    AppSettingComponent
+    AppSettingComponent,
+    FollowListComponent
   ],
   imports: [
     AppRoutingModule,

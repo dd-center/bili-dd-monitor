@@ -1,0 +1,10 @@
+.scroll-viewport{
+    height: 100%;
+    width: 100%;
+}
+.search{
+    width: 200px;
+}
+.scroll-content{
+    padding: 20px;
+}

@@ -1,1 +1,75 @@
-<p>app-vtbs works!</p>
+<cdk-virtual-scroll-viewport itemSize="50" class="scroll-viewport">
+  <div class="scroll-content">
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" class="search">
+      <input type="text" nz-input #searchInput />
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary" nzSearch (click)="filter(searchInput.value)"><i nz-icon
+          nzType="search"></i></button>
+    </ng-template>
+    <br>
+    <nz-list>
+      <nz-list-item *cdkVirtualFor="let vtbInfo of vtbInfos" [nzActions]="[followAction,enterRoomAction]"
+        [nzContent]="vtbInfo.liveStatus?contentOnline:contentOffline">
+        <ng-template #contentOnline>
+          <nz-tag *ngIf="vtbInfo.liveStatus" [nzColor]="'green'">online <i nz-icon nzType="fire" nzTheme="outline"></i>
+            {{vtbInfo.online}}</nz-tag>
+        </ng-template>
+        <ng-template #contentOffline>
+          <nz-tag *ngIf="!vtbInfo.liveStatus" [nzColor]="'red'">offline</nz-tag>
+        </ng-template>
+        <ng-template #followAction><a (click)="follow(vtbInfo.mid)">{{follows.includes(vtbInfo.mid)?"取消关注":"关注"}}</a>
+        </ng-template>
+        <ng-template #enterRoomAction><a (click)="enterRoom(vtbInfo.roomid)">进入直播间</a></ng-template>
+        <nz-list-item-meta *ngIf="vtbInfo" [nzTitle]="nzTitle" [nzAvatar]="nzAvatar" [nzDescription]="vtbInfo.sign">
+          <ng-template #nzAvatar>
+            <nz-avatar nz-popover nzPopoverPlacement="rightTop" [nzPopoverContent]="contentTemplate" nzSize="large"
+              nzIcon="user" [nzSrc]="vtbInfo.face">
+              <ng-template #contentTemplate>
+                <nz-card style="width:400px;" [nzCover]="coverTemplate" [nzActions]="[followAction, enterRoomAction]">
+                  <nz-card-meta [nzTitle]="vtbInfo.uname" [nzDescription]="vtbInfo.sign" [nzAvatar]="avatarTemplate">
+                  </nz-card-meta>
+                  <ng-template #avatarTemplate>
+                    <nz-avatar [nzSize]="64" [nzSrc]="vtbInfo.face"></nz-avatar>
+                  </ng-template>
+                  <ng-template #coverTemplate>
+                    <img alt="" [src]="vtbInfo.topPhoto" />
+                  </ng-template>
+                  <ng-template #followAction>
+                    <i *ngIf="follows.includes(vtbInfo.mid)" nz-icon nzType="heart" nzTheme="twotone"
+                      [nzTwotoneColor]="'#CF1322'" (click)="follow(vtbInfo.mid)"></i>
+                    <i *ngIf="!follows.includes(vtbInfo.mid)" nz-icon nzType="heart" nzTheme="outline"
+                      (click)="follow(vtbInfo.mid)"></i>
+                  </ng-template>
+                  <ng-template #enterRoomAction>
+                    <i nz-icon nzType="play-square" nzTheme="outline"></i>
+                  </ng-template>
+                  <br>
+                  <nz-row [nzGutter]="24">
+                    <nz-col [nzSpan]="8">
+                      <nz-statistic [nzValue]="vtbInfo.follower | number" [nzTitle]="'粉丝'"></nz-statistic>
+                    </nz-col>
+                    <nz-col [nzSpan]="8">
+                      <nz-statistic [nzValue]="vtbInfo.rise | number" [nzTitle]="'粉丝变化'"
+                        [nzPrefix]="vtbInfo.rise>0?vtbInfo.rise<0?followerDown:followerUp:null"
+                        [nzValueStyle]="vtbInfo.rise>0?vtbInfo.rise<0?{ color: '#CF1322' } :{ color: '#3F8600' }:null">
+                      </nz-statistic>
+                      <ng-template #followerUp><i nz-icon nzType="arrow-up"></i></ng-template>
+                      <ng-template #followerDown><i nz-icon nzType="arrow-down"></i></ng-template>
+                    </nz-col>
+                    <nz-col [nzSpan]="8">
+                      <nz-statistic [nzValue]="vtbInfo.archiveView | number" [nzTitle]="'播放量'"></nz-statistic>
+                    </nz-col>
+                  </nz-row>
+                </nz-card>
+              </ng-template>
+            </nz-avatar>
+          </ng-template>
+          <ng-template #nzTitle>
+            {{ vtbInfo.uname }}
+          </ng-template>
+        </nz-list-item-meta>
+      </nz-list-item>
+    </nz-list>
+  </div>
+</cdk-virtual-scroll-viewport>

@@ -1,1 +1,19 @@
-<p>app-follow works!</p>
+<nz-layout>
+  <nz-sider nzTheme="light">
+    <div class="sider-header">
+      <nz-row [nzGutter]="16">
+        <nz-col [nzSpan]="15">
+          <p>我的关注</p>
+        </nz-col>
+        <nz-col [nzSpan]="1">
+          <a ><i nz-icon nzType="plus-circle" nzTheme="outline" font-size="16px"></i></a>
+        </nz-col>
+      </nz-row>
+    </div>
+    <ul nz-menu nzMode="inline">
+      <li nz-menu-item><i nz-icon nzType="user" nzTheme="outline"></i>全部关注</li>
+    </ul>
+  </nz-sider>
+  <nz-content class="follow-content">
+  </nz-content>
+</nz-layout>

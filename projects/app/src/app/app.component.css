@@ -1,3 +1,7 @@
 .content{
-    background-color: white
+    background-color: white;
+    height: 751px;
+}
+[nz-icon]{
+    font-size: 20px
 }

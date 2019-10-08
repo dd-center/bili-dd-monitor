@@ -73,19 +73,40 @@ var vtbInfosInit = new Promise(function (resolve) {
         }
     }, 50);
 });
+var settingInit = function () { return __awaiter(_this, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        services_1.initFollows();
+        return [2];
+    });
+}); };
+var test = function () { return __awaiter(_this, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        return [2];
+    });
+}); };
 var win = null;
 var vtbInfosService;
 (function () { return __awaiter(_this, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4, vtbInfosInit];
+            case 0: return [4, settingInit()];
             case 1:
+                _a.sent();
+                return [4, vtbInfosInit];
+            case 2:
                 vtbInfosService = _a.sent();
                 return [4, mainWindowInit];
-            case 2:
+            case 3:
                 win = _a.sent();
                 electron_1.ipcMain.on('vtbInfos', function (event) {
                     event.returnValue = vtbInfosService.getVtbInfos();
+                });
+                electron_1.ipcMain.on('setFollow', function (event, value) {
+                    services_1.setFollow(value);
+                    event.returnValue = services_1.getFollows();
+                });
+                electron_1.ipcMain.on('getFollows', function (event) {
+                    event.returnValue = services_1.getFollows();
                 });
                 return [2];
         }

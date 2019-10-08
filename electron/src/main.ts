@@ -1,5 +1,8 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
-import { VtbInfoService } from './services';
+import { VtbInfoService, getFollows, setFollow, initFollows} from './services';
+import * as setting from 'electron-settings'
+
+import { async } from 'q';
 const createMainWindow = (): BrowserWindow => {
     const win = new BrowserWindow({
         width: 1200,
@@ -35,15 +38,28 @@ const vtbInfosInit = new Promise<VtbInfoService>((resolve) => {
         }
     }, 50);
 })
+const settingInit = async()=>{
+    initFollows();
+}
+const test = async()=>{
+}
 let win: BrowserWindow = null;
 let vtbInfosService: VtbInfoService;
 (async () => {
+    await settingInit();
     vtbInfosService = await vtbInfosInit;
     win = await mainWindowInit;
 
     ipcMain.on('vtbInfos', (event: Electron.IpcMainEvent) => {
         event.returnValue = vtbInfosService.getVtbInfos();
     });
+    ipcMain.on('setFollow',(event:Electron.IpcMainEvent,value:number)=>{
+        setFollow(value);
+        event.returnValue = getFollows();
+    })
+    ipcMain.on('getFollows',(event:Electron.IpcMainEvent)=>{
+        event.returnValue = getFollows();
+    })
 })();
 
 

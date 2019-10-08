@@ -15,6 +15,8 @@ import { AppFollowComponent } from './app-follow/app-follow.component';
 import { AppVtbsComponent } from './app-vtbs/app-vtbs.component';
 import { AppDdcAppComponent } from './app-ddc-app/app-ddc-app.component';
 import { AppSettingComponent } from './app-setting/app-setting.component';
+import { NgxElectronModule } from 'ngx-electron'
+import { ScrollingModule } from '@angular/cdk/scrolling';
 registerLocaleData(zh);
 
 @NgModule({
@@ -33,7 +35,9 @@ registerLocaleData(zh);
     HttpClientModule,
     BrowserAnimationsModule,
     /** 导入 ng-zorro-antd 模块 **/
-    NgZorroAntdModule
+    NgZorroAntdModule,
+    NgxElectronModule,
+    ScrollingModule
   ],
   bootstrap: [AppComponent],
   /** 配置 ng-zorro-antd 国际化（文案 及 日期） **/

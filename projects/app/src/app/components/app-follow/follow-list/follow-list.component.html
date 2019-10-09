@@ -2,74 +2,69 @@
 
 <cdk-virtual-scroll-viewport itemSize="50" class="scroll-viewport">
   <div class="scroll-content">
-        <nz-list>
-                <nz-list-item *cdkVirtualFor="let vtbInfo of vtbInfos" [nzActions]="[followAction,enterRoomAction,alterFollowListAction]"
-                [nzContent]="followListItemContent">
-                <ng-template #followAction><a (click)="onFollow(vtbInfo.mid)">取消关注</a>
-                </ng-template>
-                <ng-template #enterRoomAction><a (click)="enterRoom(vtbInfo.roomid)">进入直播间</a></ng-template>
-                <ng-template #alterFollowListAction><a (click)="handleSetListModalShow(vtbInfo.mid)">设置分组</a></ng-template>
-            <ng-template #followListItemContent>
-            </ng-template>
-            <nz-list-item-meta *ngIf="vtbInfo" [nzTitle]="nzTitle" [nzAvatar]="nzAvatar" [nzDescription]="vtbInfo.sign">
-                    <ng-template #nzTitle>
-                            {{ vtbInfo.uname }}
-                          </ng-template>
-                    <ng-template #nzAvatar>
-                            <nz-avatar nz-popover nzPopoverPlacement="rightTop" [nzPopoverContent]="contentTemplate" nzSize="large"
-                              nzIcon="user" [nzSrc]="vtbInfo.face">
-                              <ng-template #contentTemplate>
-                                <nz-card style="width:400px;" [nzCover]="coverTemplate" [nzActions]="[followAction, enterRoomAction]">
-                                  <nz-card-meta [nzTitle]="vtbInfo.uname" [nzDescription]="vtbInfo.sign" [nzAvatar]="avatarTemplate">
-                                  </nz-card-meta>
-                                  <ng-template #avatarTemplate>
-                                    <nz-avatar [nzSize]="64" [nzSrc]="vtbInfo.face"></nz-avatar>
-                                  </ng-template>
-                                  <ng-template #coverTemplate>
-                                    <img alt="" [src]="vtbInfo.topPhoto" />
-                                  </ng-template>
-                                  <ng-template #followAction>
-                                    <i nz-icon nzType="heart" nzTheme="twotone"
-                                      [nzTwotoneColor]="'#CF1322'" (click)="onFollow(vtbInfo.mid)"></i>
-                                  </ng-template>
-                                  <ng-template #enterRoomAction>
-                                    <i nz-icon nzType="play-square" nzTheme="outline"></i>
-                                  </ng-template>
-                                  <br>
-                                  <nz-row [nzGutter]="24">
-                                    <nz-col [nzSpan]="8">
-                                      <nz-statistic [nzValue]="vtbInfo.follower | number" [nzTitle]="'粉丝'"></nz-statistic>
-                                    </nz-col>
-                                    <nz-col [nzSpan]="8">
-                                      <nz-statistic [nzValue]="vtbInfo.rise | number" [nzTitle]="'粉丝变化'"
-                                        [nzPrefix]="vtbInfo.rise>0?vtbInfo.rise<0?followerDown:followerUp:null"
-                                        [nzValueStyle]="vtbInfo.rise>0?vtbInfo.rise<0?{ color: '#CF1322' } :{ color: '#3F8600' }:null">
-                                      </nz-statistic>
-                                      <ng-template #followerUp><i nz-icon nzType="arrow-up"></i></ng-template>
-                                      <ng-template #followerDown><i nz-icon nzType="arrow-down"></i></ng-template>
-                                    </nz-col>
-                                    <nz-col [nzSpan]="8">
-                                      <nz-statistic [nzValue]="vtbInfo.archiveView | number" [nzTitle]="'播放量'"></nz-statistic>
-                                    </nz-col>
-                                  </nz-row>
-                                </nz-card>
-                              </ng-template>
-                            </nz-avatar>
-                          </ng-template>
-            </nz-list-item-meta>
-            </nz-list-item>
-          </nz-list>
+    <nz-list>
+      <nz-list-item *cdkVirtualFor="let vtbInfo of vtbInfos"
+        [nzActions]="[followAction,enterRoomAction,alterFollowListAction]" [nzContent]="followListItemContent">
+        <ng-template #followAction><a (click)="onFollow(vtbInfo.mid)">取消关注</a>
+        </ng-template>
+        <ng-template #enterRoomAction><a>进入直播间</a></ng-template>
+        <ng-template #alterFollowListAction><a (click)="handleSetListModalShow(vtbInfo.mid)">设置分组</a></ng-template>
+        <ng-template #followListItemContent>
+        </ng-template>
+        <nz-list-item-meta *ngIf="vtbInfo" [nzTitle]="nzTitle" [nzAvatar]="nzAvatar" [nzDescription]="vtbInfo.sign">
+          <ng-template #nzTitle>
+            {{ vtbInfo.uname }}
+          </ng-template>
+          <ng-template #nzAvatar>
+            <nz-avatar nz-popover nzPopoverPlacement="rightTop" [nzPopoverContent]="contentTemplate" nzSize="large"
+              nzIcon="user" [nzSrc]="vtbInfo.face">
+              <ng-template #contentTemplate>
+                <nz-card style="width:400px;" [nzCover]="coverTemplate" [nzActions]="[followAction, enterRoomAction]">
+                  <nz-card-meta [nzTitle]="vtbInfo.uname" [nzDescription]="vtbInfo.sign" [nzAvatar]="avatarTemplate">
+                  </nz-card-meta>
+                  <ng-template #avatarTemplate>
+                    <nz-avatar [nzSize]="64" [nzSrc]="vtbInfo.face"></nz-avatar>
+                  </ng-template>
+                  <ng-template #coverTemplate>
+                    <img alt="" [src]="vtbInfo.topPhoto" />
+                  </ng-template>
+                  <ng-template #followAction>
+                    <i nz-icon nzType="heart" nzTheme="twotone" [nzTwotoneColor]="'#CF1322'"
+                      (click)="onFollow(vtbInfo.mid)"></i>
+                  </ng-template>
+                  <ng-template #enterRoomAction>
+                    <i nz-icon nzType="play-square" nzTheme="outline"></i>
+                  </ng-template>
+                  <br>
+                  <nz-row [nzGutter]="24">
+                    <nz-col [nzSpan]="8">
+                      <nz-statistic [nzValue]="vtbInfo.follower | number" [nzTitle]="'粉丝'"></nz-statistic>
+                    </nz-col>
+                    <nz-col [nzSpan]="8">
+                      <nz-statistic [nzValue]="vtbInfo.rise | number" [nzTitle]="'粉丝变化'"
+                        [nzPrefix]="vtbInfo.rise>0?vtbInfo.rise<0?followerDown:followerUp:null"
+                        [nzValueStyle]="vtbInfo.rise>0?vtbInfo.rise<0?{ color: '#CF1322' } :{ color: '#3F8600' }:null">
+                      </nz-statistic>
+                      <ng-template #followerUp><i nz-icon nzType="arrow-up"></i></ng-template>
+                      <ng-template #followerDown><i nz-icon nzType="arrow-down"></i></ng-template>
+                    </nz-col>
+                    <nz-col [nzSpan]="8">
+                      <nz-statistic [nzValue]="vtbInfo.archiveView | number" [nzTitle]="'播放量'"></nz-statistic>
+                    </nz-col>
+                  </nz-row>
+                </nz-card>
+              </ng-template>
+            </nz-avatar>
+          </ng-template>
+        </nz-list-item-meta>
+      </nz-list-item>
+    </nz-list>
   </div>
 </cdk-virtual-scroll-viewport>
 <nz-modal [(nzVisible)]="isSetListModalVisible" nzTitle="设置分组" (nzOnCancel)="handleSetListModalCancel()"
   (nzOnOk)="handleSetListModalOk()" [nzOkLoading]="isSetListModalOkLoading">
-  <nz-select
-      style="width: 100%"
-      nzShowSearch
-      nzAllowClear
-      [nzPlaceHolder]="'请为 '+selectVtbInfo?.uname+' 选择一个分组'"
-      [(ngModel)]="selectedValue"
-    >
-      <nz-option *ngFor="let list of followLists" [nzLabel]="list.name" [nzValue]="list.id"></nz-option>
-    </nz-select>
+  <nz-select style="width: 100%" nzShowSearch nzAllowClear [nzPlaceHolder]="'请为 '+selectVtbInfo?.uname+' 选择一个分组'"
+    [(ngModel)]="selectedValue">
+    <nz-option *ngFor="let list of followLists" [nzLabel]="list.name" [nzValue]="list.id"></nz-option>
+  </nz-select>
 </nz-modal>

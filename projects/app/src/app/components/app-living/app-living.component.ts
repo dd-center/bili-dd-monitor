@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FollowListService } from '../../follow-list.service';
 import { VtbInfoService } from '../../vtb-info.service';
-import{VtbInfo,FollowList} from '../../../../../../interfaces';
+import { VtbInfo, FollowList } from '../../../../../../interfaces';
 
 @Component({
   selector: 'app-app-living',
@@ -9,16 +9,16 @@ import{VtbInfo,FollowList} from '../../../../../../interfaces';
   styleUrls: ['./app-living.component.css']
 })
 export class AppLivingComponent implements OnInit {
-  private vtbInfos:VtbInfo[] = [];
-  private timer:any;
+  public vtbInfos: VtbInfo[] = [];
+  private timer: any;
 
-  constructor(private followListService:FollowListService,private vtbInfoService:VtbInfoService) { }
-  loadData = ()=>{
+  constructor(private followListService: FollowListService, private vtbInfoService: VtbInfoService) { }
+  loadData = () => {
     this.vtbInfos = [];
-    this.vtbInfoService.getVtbInfos().subscribe((vtbInfos:VtbInfo[])=>{
-      this.followListService.getFollowLists().subscribe((followLists:FollowList[])=>{
-        followLists.forEach((followList:FollowList)=>{
-          this.vtbInfos = [...this.vtbInfos,...vtbInfos.filter((vtbInfo:VtbInfo)=>followList.mids.includes(vtbInfo.mid))]
+    this.vtbInfoService.getVtbInfos().subscribe((vtbInfos: VtbInfo[]) => {
+      this.followListService.getFollowLists().subscribe((followLists: FollowList[]) => {
+        followLists.forEach((followList: FollowList) => {
+          this.vtbInfos = [...this.vtbInfos, ...vtbInfos.filter((vtbInfo: VtbInfo) => followList.mids.includes(vtbInfo.mid))]
         })
       })
     })
@@ -26,7 +26,7 @@ export class AppLivingComponent implements OnInit {
   }
   ngOnInit() {
     this.loadData();
-    this.timer = setInterval(this.loadData,2000)
+    this.timer = setInterval(this.loadData, 2000)
   }
   ngOnDestroy(): void {
     clearInterval(this.timer);

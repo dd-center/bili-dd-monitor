@@ -7,10 +7,8 @@ import { VtbInfo } from '../../../../interfaces';
 export class NoticeService {
 
   constructor(private electron: ElectronService) {
-    console.log('init')
-    electron.ipcRenderer.on('liveNotice', (event: Electron.IpcRendererEvent, vtbInfo: VtbInfo) => {
-      console.log(123)
-      const notification = new Notification(vtbInfo.uname, {
+    electron.ipcRenderer.on('liveNotice', (event: Electron.IpcRendererEvent, vtbInfo: VtbInfo, extra: string) => {
+      const notification = new Notification(extra + " " + vtbInfo.uname, {
         body: vtbInfo.title,
         icon: vtbInfo.face,
         image: vtbInfo.topPhoto,

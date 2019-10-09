@@ -1,6 +1,5 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { VtbInfoService, getFollowLists, addFollowList, deleteFollowList, renameFollowList, initFollowList, follow, setFollowList } from './services';
-import * as setting from 'electron-settings'
 import { FollowList, VtbInfo } from '../../interfaces';
 const createMainWindow = (): BrowserWindow => {
     const win = new BrowserWindow({
@@ -16,8 +15,9 @@ const createMainWindow = (): BrowserWindow => {
             nodeIntegration: true,
         },
     });
-    win.loadURL('http://localhost:4200');
-    win.webContents.openDevTools();
+    // win.loadURL('http://localhost:4200');
+    // win.webContents.openDevTools();
+    win.loadURL(`file://${__dirname}/../../app/index.html`);
     win.setMenu(null);
     win.on('close', () => {
         app.quit();
@@ -47,17 +47,31 @@ let vtbInfosService: VtbInfoService;
 (async () => {
     vtbInfosService = await vtbInfosInit;
     win = await mainWindowInit;
-
     initFollowList();
     win.webContents.on('did-finish-load', () => {
         let lastLiveVtbs: number[] = [];
         vtbInfosService.onUpdate((vtbInfos) => {
             const followVtbs = getFollowLists().map((followList: FollowList) => ([...followList.mids]))[0];
             let nowLiveFollowedVtbs = vtbInfos.filter((vtbInfo: VtbInfo) => (followVtbs.includes(vtbInfo.mid) && vtbInfo.liveStatus)).map((vtbInfo: VtbInfo) => vtbInfo.mid);
-            const upLiveFollowedVtb = [];
-            const downLiveFollowedVtb = [];
-
-            // win.webContents.send('liveNotice', vtbInfos[0],"上播提醒：下播提醒") //
+            let upLiveFollowedVtbs: number[] = [];
+            let downLiveFollowedVtbs: number[] = [];
+            nowLiveFollowedVtbs.forEach(nowLiveFollowedVtb => {
+                if (!lastLiveVtbs.includes(nowLiveFollowedVtb)) {
+                    upLiveFollowedVtbs.push(nowLiveFollowedVtb)
+                }
+            });
+            lastLiveVtbs.forEach(lastLiveVtb => {
+                if (!nowLiveFollowedVtbs.includes(lastLiveVtb)) {
+                    downLiveFollowedVtbs.push(lastLiveVtb);
+                }
+            })
+            lastLiveVtbs = nowLiveFollowedVtbs;
+            upLiveFollowedVtbs.forEach((mid: number) => {
+                win.webContents.send('liveNotice', vtbInfos.find((vtbInfo: VtbInfo) => vtbInfo.mid == mid), "上播提醒")
+            })
+            downLiveFollowedVtbs.forEach((mid: number) => {
+                win.webContents.send('liveNotice', vtbInfos.find((vtbInfo: VtbInfo) => vtbInfo.mid == mid), "下播提醒")
+            })
         })
     })
     ipcMain.on('vtbInfos', (event: Electron.IpcMainEvent) => {

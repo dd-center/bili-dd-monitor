@@ -34,10 +34,33 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spread = (this && this.__spread) || function () {
+    for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
+    return ar;
+};
 var _this = this;
 exports.__esModule = true;
 var electron_1 = require("electron");
 var services_1 = require("./services");
+var minus = function (a, b) {
+    return a.uniquelize().each(function (o) { return b.contains(o) ? null : o; });
+};
 var createMainWindow = function () {
     var win = new electron_1.BrowserWindow({
         width: 1200,
@@ -93,6 +116,16 @@ var vtbInfosService;
             case 2:
                 win = _a.sent();
                 services_1.initFollowList();
+                win.webContents.on('did-finish-load', function () {
+                    var lastLiveVtbs = [];
+                    vtbInfosService.onUpdate(function (vtbInfos) {
+                        var followVtbs = services_1.getFollowLists().map(function (followList) { return (__spread(followList.mids)); })[0];
+                        var nowLiveFollowedVtbs = vtbInfos.filter(function (vtbInfo) { return (followVtbs.includes(vtbInfo.mid) && vtbInfo.liveStatus); }).map(function (vtbInfo) { return vtbInfo.mid; });
+                        var upLiveFollowedVtb = minus(nowLiveFollowedVtbs, lastLiveVtbs);
+                        console.log(minus(nowLiveFollowedVtbs, lastLiveVtbs));
+                        console.log(minus(lastLiveVtbs, nowLiveFollowedVtbs));
+                    });
+                });
                 electron_1.ipcMain.on('vtbInfos', function (event) {
                     event.returnValue = vtbInfosService.getVtbInfos();
                 });

@@ -1,8 +1,9 @@
 <div nz-row>
   <div nz-col nzSpan="4">
     <div class="sider-header">
-          <span class="follow-list-header-label">我的关注</span>
-          <span class="follow-list-add-link"><a (click)="showCreateListModal()"><i nz-icon nzType="plus-circle" nzTheme="outline" font-size="16px"></i></a></span>
+      <span class="follow-list-header-label">我的关注</span>
+      <span class="follow-list-add-link"><a (click)="showCreateListModal()"><i nz-icon nzType="plus-circle"
+            nzTheme="outline" font-size="16px"></i></a></span>
     </div>
     <ul nz-menu>
       <li nz-menu-item [routerLink]="['./list',-1]" nzMatchRouter><i nz-icon nzType="user" nzTheme="outline"></i>全部关注
@@ -10,12 +11,10 @@
       <li *ngFor="let list of followLists" nz-menu-item [routerLink]="['./list',list.id]" nzMatchRouter><i nz-icon
           nzType="solution" nzTheme="outline"></i><span>{{list.name}}</span>
         <span nz-dropdown [nzDropdownMenu]="menu" [nzDisabled]="list.id<=0">
-          <span *ngIf="(mouseOverListId==0)||(mouseOverListId!=list.id)"
-            class="list-item-more"
+          <span *ngIf="(mouseOverListId==0)||(mouseOverListId!=list.id)" class="list-item-more"
             (mouseenter)="mouseEnter(list.id)">{{list.mids.length}}</span>
-          <span *ngIf="(mouseOverListId!=0)&&(mouseOverListId==list.id)"
-          class="list-item-more" (mouseleave)="mouseLeave()"><i nz-icon nzType="more"
-              nzTheme="outline"></i>
+          <span *ngIf="(mouseOverListId!=0)&&(mouseOverListId==list.id)" class="list-item-more"
+            (mouseleave)="mouseLeave()"><i nz-icon nzType="more" nzTheme="outline"></i>
           </span>
           <nz-dropdown-menu #menu nzPlacement="bottomLeft">
             <ul nz-menu style="width: 150px">

@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { VtbInfoService, getFollowLists, addFollowList, deleteFollowList, renameFollowList, initFollowList, follow, setFollowList } from './services';
 import * as setting from 'electron-settings'
-import { FollowList } from '../../interfaces';
+import { FollowList, VtbInfo } from '../../interfaces';
 const createMainWindow = (): BrowserWindow => {
     const win = new BrowserWindow({
         width: 1200,
@@ -10,7 +10,7 @@ const createMainWindow = (): BrowserWindow => {
         maximizable: false,
         fullscreen: false,
         fullscreenable: false,
-        icon:'dist/public/icon.ico',
+        icon: 'dist/public/icon.ico',
         title: 'DD监控室',
         webPreferences: {
             nodeIntegration: true,
@@ -49,6 +49,17 @@ let vtbInfosService: VtbInfoService;
     win = await mainWindowInit;
 
     initFollowList();
+    win.webContents.on('did-finish-load', () => {
+        let lastLiveVtbs: number[] = [];
+        vtbInfosService.onUpdate((vtbInfos) => {
+            const followVtbs = getFollowLists().map((followList: FollowList) => ([...followList.mids]))[0];
+            let nowLiveFollowedVtbs = vtbInfos.filter((vtbInfo: VtbInfo) => (followVtbs.includes(vtbInfo.mid) && vtbInfo.liveStatus)).map((vtbInfo: VtbInfo) => vtbInfo.mid);
+            const upLiveFollowedVtb = [];
+            const downLiveFollowedVtb = [];
+
+            // win.webContents.send('liveNotice', vtbInfos[0],"上播提醒：下播提醒") //
+        })
+    })
     ipcMain.on('vtbInfos', (event: Electron.IpcMainEvent) => {
         event.returnValue = vtbInfosService.getVtbInfos();
     });
@@ -71,14 +82,10 @@ let vtbInfosService: VtbInfoService;
         follow(mid);
         event.returnValue = getFollowLists();;
     });
-    ipcMain.on('setFollowList', (event: Electron.IpcMainEvent, mids: number[],listId:number) => {
-        setFollowList(mids,listId)
+    ipcMain.on('setFollowList', (event: Electron.IpcMainEvent, mids: number[], listId: number) => {
+        setFollowList(mids, listId)
         event.returnValue = getFollowLists();;
     });
-
-
-
-
 })();
 
 

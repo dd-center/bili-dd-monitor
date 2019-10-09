@@ -18,7 +18,7 @@
         <ng-template #contentOffline>
           <nz-tag *ngIf="!vtbInfo.liveStatus" [nzColor]="'red'">offline</nz-tag>
         </ng-template>
-        <ng-template #followAction><a (click)="onFollow(vtbInfo.mid)">{{follows.includes(vtbInfo.mid)?"取消关注":"关注"}}</a>
+        <ng-template #followAction><a (click)="onFollow(vtbInfo.mid)">{{follows.includes(vtbInfo.mid)?"取关":"关注"}}</a>
         </ng-template>
         <ng-template #enterRoomAction><a (click)="enterRoom(vtbInfo.roomid)">进入直播间</a></ng-template>
         <nz-list-item-meta *ngIf="vtbInfo" [nzTitle]="nzTitle" [nzAvatar]="nzAvatar" [nzDescription]="vtbInfo.sign">

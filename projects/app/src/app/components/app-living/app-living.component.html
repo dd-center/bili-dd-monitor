@@ -1,1 +1,22 @@
-<p>app-living works!</p>
+<nz-table #headerTable [nzData]="vtbInfos" [nzPageSize]="10" [nzScroll]="{ y: '651px' }" style="padding-right: 10px">
+        <thead>
+          <tr>
+            <th nzWidth="70px">头像</th>
+            <th nzWidth="180px">昵称</th>
+            <th nzWidth="100px">ID</th>
+            <th nzWidth="100px">人气</th>
+            <th nzWidth="350px">直播标题</th>
+            <th nzWidth="120px">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let vtbInfo of headerTable.data">
+            <td><nz-avatar [nzSize]="large" nzIcon="user" [nzSrc]="vtbInfo.face"></nz-avatar></td>
+            <td>{{ vtbInfo.uname }}</td>
+            <td>{{ vtbInfo.mid }}</td>
+            <td>{{ vtbInfo.online }}</td>
+            <td>{{ vtbInfo.title }}</td>
+            <td><a>进入直播间</a></td>
+          </tr>
+        </tbody>
+      </nz-table>

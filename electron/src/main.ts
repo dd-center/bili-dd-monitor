@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
-import { VtbInfoService, getFollowLists, addFollowList, deleteFollowList, renameFollowList } from './services';
+import { VtbInfoService, getFollowLists, addFollowList, deleteFollowList, renameFollowList, initFollowList, follow, setFollowList } from './services';
 import * as setting from 'electron-settings'
 import { FollowList } from '../../interfaces';
 const createMainWindow = (): BrowserWindow => {
@@ -10,7 +10,7 @@ const createMainWindow = (): BrowserWindow => {
         maximizable: false,
         fullscreen: false,
         fullscreenable: false,
-
+        icon:'dist/public/icon.ico',
         title: 'DD监控室',
         webPreferences: {
             nodeIntegration: true,
@@ -48,10 +48,7 @@ let vtbInfosService: VtbInfoService;
     vtbInfosService = await vtbInfosInit;
     win = await mainWindowInit;
 
-    if (!setting.has('followLists')) {
-        const defaultList: FollowList = { id: 0, name: '默认分组', mids: [] };
-        setting.set('followLists', JSON.stringify([defaultList]));
-    }
+    initFollowList();
     ipcMain.on('vtbInfos', (event: Electron.IpcMainEvent) => {
         event.returnValue = vtbInfosService.getVtbInfos();
     });
@@ -70,6 +67,16 @@ let vtbInfosService: VtbInfoService;
         renameFollowList(id, name);
         event.returnValue = getFollowLists();;
     });
+    ipcMain.on('follow', (event: Electron.IpcMainEvent, mid: number) => {
+        follow(mid);
+        event.returnValue = getFollowLists();;
+    });
+    ipcMain.on('setFollowList', (event: Electron.IpcMainEvent, mids: number[],listId:number) => {
+        setFollowList(mids,listId)
+        event.returnValue = getFollowLists();;
+    });
+
+
 
 
 })();

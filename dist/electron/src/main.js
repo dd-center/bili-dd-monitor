@@ -38,7 +38,6 @@ var _this = this;
 exports.__esModule = true;
 var electron_1 = require("electron");
 var services_1 = require("./services");
-var setting = require("electron-settings");
 var createMainWindow = function () {
     var win = new electron_1.BrowserWindow({
         width: 1200,
@@ -47,6 +46,7 @@ var createMainWindow = function () {
         maximizable: false,
         fullscreen: false,
         fullscreenable: false,
+        icon: 'dist/public/icon.ico',
         title: 'DD监控室',
         webPreferences: {
             nodeIntegration: true
@@ -84,7 +84,6 @@ var test = function () { return __awaiter(_this, void 0, void 0, function () {
 var win = null;
 var vtbInfosService;
 (function () { return __awaiter(_this, void 0, void 0, function () {
-    var defaultList;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4, vtbInfosInit];
@@ -93,10 +92,7 @@ var vtbInfosService;
                 return [4, mainWindowInit];
             case 2:
                 win = _a.sent();
-                if (!setting.has('followLists')) {
-                    defaultList = { id: 0, name: '默认分组', mids: [] };
-                    setting.set('followLists', JSON.stringify([defaultList]));
-                }
+                services_1.initFollowList();
                 electron_1.ipcMain.on('vtbInfos', function (event) {
                     event.returnValue = vtbInfosService.getVtbInfos();
                 });
@@ -115,6 +111,16 @@ var vtbInfosService;
                 });
                 electron_1.ipcMain.on('renameFollowList', function (event, id, name) {
                     services_1.renameFollowList(id, name);
+                    event.returnValue = services_1.getFollowLists();
+                    ;
+                });
+                electron_1.ipcMain.on('follow', function (event, mid) {
+                    services_1.follow(mid);
+                    event.returnValue = services_1.getFollowLists();
+                    ;
+                });
+                electron_1.ipcMain.on('setFollowList', function (event, mids, listId) {
+                    services_1.setFollowList(mids, listId);
                     event.returnValue = services_1.getFollowLists();
                     ;
                 });

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FollowListService } from '../../follow-list.service';
 import { FollowList } from '../../../../../../interfaces';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-app-follow',
@@ -16,12 +17,14 @@ export class AppFollowComponent implements OnInit {
   createListModalValue = '';
   isCreateListModalVisible = false;
   isCreateListModalOkLoading = false;
-  constructor(private followListService: FollowListService, private message: NzMessageService) { }
-
-  ngOnInit() {
+  constructor(private router:Router,private followListService: FollowListService, private message: NzMessageService) { }
+  loadData(){
     this.followListService.getFollowLists().subscribe((followLists: FollowList[]) => {
       this.followLists = followLists;
     })
+  }
+  ngOnInit() {
+    this.loadData();
   }
   mouseEnter(id: number) {
     this.mouseOverListId = id;
@@ -36,6 +39,7 @@ export class AppFollowComponent implements OnInit {
       this.followListService.deleteFollowList(id).subscribe((followLists: FollowList[]) => {
         this.followLists = followLists;
         this.message.success('分组删除成功');
+        this.router.navigateByUrl("follow/list/-1") 
       })
     }
   }

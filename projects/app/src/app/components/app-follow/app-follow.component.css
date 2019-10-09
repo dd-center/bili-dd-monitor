@@ -10,3 +10,14 @@
     height: 771px;
     background-color: white;
 }
+.follow-list-header-label{
+    float: left;
+    text-align: left;
+}
+.follow-list-add-link{
+    float: right;
+    text-align: center;
+}
+.list-item-more{
+    float:right; text-align:center;width: 20px;
+}

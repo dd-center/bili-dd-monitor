@@ -1,9 +1,12 @@
 import { VtbInfoService } from './vtbInfo';
 import {
+    initFollowList,
     getFollowLists,
     addFollowList,
     deleteFollowList,
-    renameFollowList
+    renameFollowList,
+    follow,
+    setFollowList
 } from './followList';
 
 export {
@@ -11,5 +14,8 @@ export {
     getFollowLists,
     addFollowList,
     deleteFollowList,
-    renameFollowList
+    renameFollowList,
+    initFollowList,
+    follow,
+    setFollowList
 }

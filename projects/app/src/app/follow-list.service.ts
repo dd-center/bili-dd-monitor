@@ -19,5 +19,11 @@ export class FollowListService {
   renameFollowList(id: number, name: string): Observable<FollowList[]> {
     return of(this.electron.ipcRenderer.sendSync('renameFollowList', id, name));
   }
+  follow(mid:number):Observable<FollowList[]>{
+    return of(this.electron.ipcRenderer.sendSync('follow', mid));
+  }
+  setFollowList(mids:number[],listId:number):Observable<FollowList[]>{
+    return of(this.electron.ipcRenderer.sendSync('setFollowList', mids,listId));
+  }
 
 }

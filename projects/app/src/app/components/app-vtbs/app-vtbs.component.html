@@ -12,7 +12,7 @@
       <nz-list-item *cdkVirtualFor="let vtbInfo of vtbInfos" [nzActions]="[followAction,enterRoomAction]"
         [nzContent]="vtbInfo.liveStatus?contentOnline:contentOffline">
         <ng-template #followAction>
-          <a (click)="onFollow(vtbInfo.mid)">{{follows.includes(vtbInfo.mid)?'取关':'关注'}}
+          <a (click)="onFollow(vtbInfo.mid)">{{followedVtbMids.includes(vtbInfo.mid)?'取关':'关注'}}
           </a>
         </ng-template>
         <ng-template #enterRoomAction><a>进入直播间</a></ng-template>
@@ -38,9 +38,9 @@
                     <img alt="" [src]="vtbInfo.topPhoto" />
                   </ng-template>
                   <ng-template #followAction>
-                    <i *ngIf="follows.includes(vtbInfo.mid)" nz-icon nzType="heart" nzTheme="twotone"
+                    <i *ngIf="followedVtbMids.includes(vtbInfo.mid)" nz-icon nzType="heart" nzTheme="twotone"
                       [nzTwotoneColor]="'#CF1322'" (click)="onFollow(vtbInfo.mid)"></i>
-                    <i *ngIf="!follows.includes(vtbInfo.mid)" nz-icon nzType="heart" nzTheme="outline"
+                    <i *ngIf="!followedVtbMids.includes(vtbInfo.mid)" nz-icon nzType="heart" nzTheme="outline"
                       (click)="onFollow(vtbInfo.mid)"></i>
                   </ng-template>
                   <ng-template #enterRoomAction>

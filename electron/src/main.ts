@@ -3,7 +3,7 @@ import { VtbInfoService, getFollowLists, addFollowList, deleteFollowList, rename
 import { FollowList, VtbInfo } from '../../interfaces';
 import { PlayerObj } from '../../interfaces';
 
-let playerObjMap = new Map<number,PlayerObj>();
+let playerObjMap = new Map<number, PlayerObj>();
 
 const createMainWindow = (): BrowserWindow => {
     const win = new BrowserWindow({
@@ -20,15 +20,15 @@ const createMainWindow = (): BrowserWindow => {
         },
     });
     win.loadURL('http://localhost:4200');
-    // win.webContents.openDevTools();
-    win.loadURL(`file://${__dirname}/../../app/index.html`);
+    win.webContents.openDevTools();
+    // win.loadURL(`file://${__dirname}/../../app/index.html`);
     win.setMenu(null);
     win.on('close', () => {
         app.quit();
     });
     return win;
 }
-const createPlayer = (cid:number): PlayerObj => {
+const createPlayer = (cid: number): PlayerObj => {
     const win = new BrowserWindow({
         width: 1200,
         height: 800,
@@ -44,10 +44,10 @@ const createPlayer = (cid:number): PlayerObj => {
     win.setMenu(null);
     win.on('close', () => {
     });
-    return{
-        id:Date.now(),
-        playerWin:win,
-        danmakuWin:null
+    return {
+        id: Date.now(),
+        playerWin: win,
+        danmakuWin: null
     }
 }
 const mainWindowInit = new Promise<BrowserWindow>((resolve) => {
@@ -97,8 +97,14 @@ let vtbInfosService: VtbInfoService;
             })
         })
     })
-    ipcMain.on('vtbInfos', (event: Electron.IpcMainEvent) => {
-        event.reply('vtbInfosReply', vtbInfosService.getVtbInfos());
+    ipcMain.on('getVtbInfos', (event: Electron.IpcMainEvent) => {
+        event.reply('getVtbInfosReply', vtbInfosService.getVtbInfos());
+    });
+    ipcMain.on('getFollowedVtbInfos', (event: Electron.IpcMainEvent) => {
+        event.reply('getFollowedVtbInfosReply', vtbInfosService.getFollowedVtbInfos());
+    });
+    ipcMain.on('getFollowedVtbMids', (event: Electron.IpcMainEvent) => {
+        event.reply('getFollowedVtbMidsReply', vtbInfosService.getFollowedVtbMids());
     });
     ipcMain.on('getFollowLists', (event: Electron.IpcMainEvent) => {
         event.reply('getFollowListsReply', getFollowLists());
@@ -117,7 +123,7 @@ let vtbInfosService: VtbInfoService;
     });
     ipcMain.on('follow', (event: Electron.IpcMainEvent, mid: number) => {
         follow(mid);
-        event.reply('followReply', getFollowLists());;
+        event.reply('followReply', vtbInfosService.getFollowedVtbMids());;
     });
     ipcMain.on('setFollowList', (event: Electron.IpcMainEvent, mids: number[], listId: number) => {
         setFollowList(mids, listId)

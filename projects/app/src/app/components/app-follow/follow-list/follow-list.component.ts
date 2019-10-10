@@ -18,7 +18,7 @@ export class FollowListComponent implements OnInit {
 
   private listId: number;
   public followList: FollowList;
-  public vtbInfos: VtbInfo[] = [];
+  public followedVtbInfos: VtbInfo[] = [];
   public followLists: FollowList[] = [];
   constructor(private routeInfo: ActivatedRoute, private followListService: FollowListService, private vtbInfoService: VtbInfoService, private message: NzMessageService, private followComponent: AppFollowComponent, private zone: NgZone) { }
   loadData() {
@@ -38,9 +38,9 @@ export class FollowListComponent implements OnInit {
           }
         })
       }
-      this.vtbInfoService.getVtbInfos().subscribe((vtbInfos: VtbInfo[]) => {
-        this.vtbInfos = vtbInfos.filter((vtbInfo: VtbInfo) => this.followList.mids.includes(vtbInfo.mid))
-        this.zone.run(()=>{})
+      this.vtbInfoService.getFollowedVtbInfos().subscribe((followedVtbInfos: VtbInfo[]) => {
+        this.followedVtbInfos = followedVtbInfos;
+        this.zone.run(() => { })
       })
     })
   }
@@ -52,7 +52,7 @@ export class FollowListComponent implements OnInit {
   }
   handleSetListModalShow(mid: number) {
     this.loadData();
-    this.vtbInfos.find((vtbInfo: VtbInfo) => {
+    this.followedVtbInfos.find((vtbInfo: VtbInfo) => {
       if (vtbInfo.mid == mid) {
         this.selectVtbInfo = vtbInfo
       }
@@ -73,7 +73,7 @@ export class FollowListComponent implements OnInit {
         this.isSetListModalVisible = false;
         this.message.success('设置成功');
         this.followComponent.loadData();
-        this.zone.run(()=>{})
+        this.zone.run(() => { })
       })
     } else {
       this.message.warning('请选择分组');

@@ -9,34 +9,29 @@ import { VtbInfo, FollowList } from '../../../../../../interfaces';
   styleUrls: ['./app-living.component.css']
 })
 export class AppLivingComponent implements OnInit {
-  public vtbInfos: VtbInfo[] = [];
+  public followedVtbInfos: VtbInfo[] = [];
   private timer: any;
   public isLoading = true;
-  constructor(private followListService: FollowListService, private vtbInfoService: VtbInfoService,private zone:NgZone) { 
-    
+  constructor(private followListService: FollowListService, private vtbInfoService: VtbInfoService, private zone: NgZone) {
+
   }
   loadData = () => {
-    let vtbInfosTemp = [];
-    this.vtbInfoService.getVtbInfos().subscribe((vtbInfos: VtbInfo[]) => {
-      this.followListService.getFollowLists().subscribe((followLists: FollowList[]) => {
-        followLists.forEach((followList: FollowList) => {
-          vtbInfosTemp = [...vtbInfosTemp, ...vtbInfos.filter((vtbInfo: VtbInfo) => followList.mids.includes(vtbInfo.mid))]
-        })
-        this.vtbInfos = vtbInfosTemp;
+    this.vtbInfoService.getFollowedVtbInfos().subscribe((followedVtbInfos: VtbInfo[]) => {
+      this.followedVtbInfos = followedVtbInfos;
+      this.zone.run(() => {
+
       })
     })
   }
   ngOnInit() {
-    this.vtbInfoService.getVtbInfos().subscribe((vtbInfos: VtbInfo[]) => {
-      this.followListService.getFollowLists().subscribe((followLists: FollowList[]) => {
-        followLists.forEach((followList: FollowList) => {
-          this.vtbInfos = [...this.vtbInfos, ...vtbInfos.filter((vtbInfo: VtbInfo) => followList.mids.includes(vtbInfo.mid))]
-        })
-        this.isLoading = false;
-        this.zone.run(()=>{});
+    this.vtbInfoService.getFollowedVtbInfos().subscribe((followedVtbInfos: VtbInfo[]) => {
+      this.followedVtbInfos = followedVtbInfos;
+      this.isLoading = false;
+      this.zone.run(() => {
+
       })
     })
-    this.timer = setInterval(this.loadData, 2000)
+    this.timer = setInterval(this.loadData, 2000);
   }
   ngOnDestroy(): void {
     clearInterval(this.timer);

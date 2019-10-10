@@ -7,10 +7,10 @@ import { Observable, of, Observer } from 'rxjs';
 })
 export class FollowListService {
   constructor(private electron: ElectronService) {
-    
+
   }
   private sequenceSubscriber = (channel: string) => {
-    return ((observer: Observer<FollowList[]>) => {
+    return ((observer: Observer<any>) => {
       switch (channel) {
         case 'getFollowListsReply': {
           this.electron.ipcRenderer.once('getFollowListsReply', (e: Electron.IpcRendererEvent, followLists: FollowList[]) => {
@@ -63,7 +63,7 @@ export class FollowListService {
   }
   addFollowList(name: string): Observable<FollowList[]> {
     this.electron.ipcRenderer.send('addFollowList', name);
-    return new Observable<FollowList[]>(this.sequenceSubscriber('addFollowListReply')); 
+    return new Observable<FollowList[]>(this.sequenceSubscriber('addFollowListReply'));
   }
   deleteFollowList(id: number): Observable<FollowList[]> {
     this.electron.ipcRenderer.send('deleteFollowList', id)
@@ -73,9 +73,9 @@ export class FollowListService {
     this.electron.ipcRenderer.send('renameFollowList', id, name)
     return new Observable<FollowList[]>(this.sequenceSubscriber('renameFollowListReply'));
   }
-  follow(mid: number): Observable<FollowList[]> {
+  follow(mid: number): Observable<number[]> {
     this.electron.ipcRenderer.send('follow', mid)
-    return new Observable<FollowList[]>(this.sequenceSubscriber('followReply'));
+    return new Observable<number[]>(this.sequenceSubscriber('followReply'));
   }
   setFollowList(mids: number[], listId: number): Observable<FollowList[]> {
     this.electron.ipcRenderer.send('setFollowList', mids, listId)

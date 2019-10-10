@@ -3,7 +3,7 @@
 <cdk-virtual-scroll-viewport itemSize="50" class="scroll-viewport">
   <div class="scroll-content">
     <nz-list>
-      <nz-list-item *cdkVirtualFor="let vtbInfo of vtbInfos"
+      <nz-list-item *cdkVirtualFor="let vtbInfo of followedVtbInfos"
         [nzActions]="[followAction,enterRoomAction,alterFollowListAction]" [nzContent]="followListItemContent">
         <ng-template #followAction><a (click)="onFollow(vtbInfo.mid)">取消关注</a>
         </ng-template>

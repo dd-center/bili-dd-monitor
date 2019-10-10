@@ -7,7 +7,7 @@
         [nzActions]="[followAction,enterRoomAction,alterFollowListAction]" [nzContent]="followListItemContent">
         <ng-template #followAction><a (click)="onFollow(vtbInfo.mid)">取消关注</a>
         </ng-template>
-        <ng-template #enterRoomAction><a>进入直播间</a></ng-template>
+        <ng-template #enterRoomAction><a (click)="enterRoom(vtbInfo.roomid)">进入直播间</a></ng-template>
         <ng-template #alterFollowListAction><a (click)="handleSetListModalShow(vtbInfo.mid)">设置分组</a></ng-template>
         <ng-template #followListItemContent>
         </ng-template>
@@ -33,7 +33,7 @@
                       (click)="onFollow(vtbInfo.mid)"></i>
                   </ng-template>
                   <ng-template #enterRoomAction>
-                    <i nz-icon nzType="play-square" nzTheme="outline"></i>
+                    <i nz-icon nzType="play-square" nzTheme="outline" (click)="enterRoom(vtbInfo.roomid)"></i>
                   </ng-template>
                   <br>
                   <nz-row [nzGutter]="24">

@@ -15,7 +15,7 @@
           <a (click)="onFollow(vtbInfo.mid)">{{followedVtbMids.includes(vtbInfo.mid)?'取关':'关注'}}
           </a>
         </ng-template>
-        <ng-template #enterRoomAction><a>进入直播间</a></ng-template>
+        <ng-template #enterRoomAction><a (click)="enterRoom(vtbInfo.roomid)">进入直播间</a></ng-template>
         <ng-template #contentOnline>
           <nz-tag *ngIf="vtbInfo.liveStatus" [nzColor]="'green'">online <i nz-icon nzType="fire" nzTheme="outline"></i>
             {{vtbInfo.online}}</nz-tag>
@@ -44,7 +44,7 @@
                       (click)="onFollow(vtbInfo.mid)"></i>
                   </ng-template>
                   <ng-template #enterRoomAction>
-                    <i nz-icon nzType="play-square" nzTheme="outline"></i>
+                    <i nz-icon nzType="play-square" nzTheme="outline" (click)="enterRoom(vtbInfo.roomid)"></i>
                   </ng-template>
                   <br>
                   <nz-row [nzGutter]="24">

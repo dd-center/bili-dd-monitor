@@ -1,55 +1,12 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, nativeImage } from 'electron';
 import { VtbInfoService, getFollowLists, addFollowList, deleteFollowList, renameFollowList, initFollowList, follow, setFollowList } from './services';
 import { FollowList, VtbInfo } from '../../interfaces';
 import { PlayerObj } from '../../interfaces';
-
+import * as request from 'request';
+import * as fs from 'fs';
 let playerObjMap = new Map<number, PlayerObj>();
-
-const createMainWindow = (): BrowserWindow => {
-    const win = new BrowserWindow({
-        width: 1200,
-        height: 800,
-        resizable: false,
-        maximizable: false,
-        fullscreen: false,
-        fullscreenable: false,
-        icon: 'dist/public/icon.ico',
-        title: 'DD监控室',
-        webPreferences: {
-            nodeIntegration: true,
-        },
-    });
-    win.loadURL('http://localhost:4200');
-    win.webContents.openDevTools();
-    // win.loadURL(`file://${__dirname}/../../app/index.html`);
-    win.setMenu(null);
-    win.on('close', () => {
-        app.quit();
-    });
-    return win;
-}
-const createPlayer = (cid: number): PlayerObj => {
-    const win = new BrowserWindow({
-        width: 1200,
-        height: 800,
-        resizable: true,
-        maximizable: true,
-        fullscreen: true,
-        fullscreenable: true,
-        webPreferences: {
-            nodeIntegration: true,
-        },
-    });
-    win.loadURL(`https://www.bilibili.com/blackboard/live/live-activity-player.html?enterTheRoom=0&cid=${cid}`);
-    win.setMenu(null);
-    win.on('close', () => {
-    });
-    return {
-        id: Date.now(),
-        playerWin: win,
-        danmakuWin: null
-    }
-}
+let win: BrowserWindow = null;
+let vtbInfosService: VtbInfoService;
 const mainWindowInit = new Promise<BrowserWindow>((resolve) => {
     app.on('ready', () => {
         resolve(createMainWindow());
@@ -62,11 +19,82 @@ const vtbInfosInit = new Promise<VtbInfoService>((resolve) => {
             resolve(vtbInfosService);
         }
     }, 50);
-})
-const test = async () => {
+});
+const createMainWindow = (): BrowserWindow => {
+    const win = new BrowserWindow({
+        width: 1200,
+        height: 800,
+        resizable: false,
+        maximizable: false,
+        fullscreen: false,
+        fullscreenable: false,
+        icon: 'public/icon.ico',
+        title: 'DD监控室',
+        webPreferences: {
+            nodeIntegration: true,
+        },
+    });
+    // win.loadURL('http://localhost:4200');
+    // win.webContents.openDevTools();
+    win.loadURL(`file://${__dirname}/../../app/index.html`);
+    win.setMenu(null);
+    win.on('close', () => {
+        playerObjMap.forEach((playerObj: PlayerObj) => {
+            playerObj.playerWin.close();
+        })
+        playerObjMap.clear();
+        app.quit();
+    });
+    return win;
 }
-let win: BrowserWindow = null;
-let vtbInfosService: VtbInfoService;
+const createPlayer = (cid: number): PlayerObj => {
+    // nativeImage.createFromDataURL(vtbInfosService.getVtbInfos().find((vtbInfo: VtbInfo) => vtbInfo.roomid === cid).face)
+    const win = new BrowserWindow({
+        width: 1280,
+        height: 720,
+        useContentSize: true,
+        icon: 'public/icon.ico',
+        title: vtbInfosService.getVtbInfos().find((vtbInfo: VtbInfo) => vtbInfo.roomid === cid).title,
+        webPreferences: {
+            nodeIntegration: true,
+        },
+    });
+
+    if (fs.existsSync(`./faces/${cid}.jpg`)) {
+        win.setIcon(nativeImage.createFromPath(`./faces/${cid}.jpg`));
+    } else {
+        if (fs.existsSync('./faces')) {
+            request(vtbInfosService.getVtbInfos().find((vtbInfo: VtbInfo) => vtbInfo.roomid === cid).face).pipe(fs.createWriteStream(`./faces/${cid}.jpg`)).on('close', () => {
+                win.setIcon(nativeImage.createFromPath(`./faces/${cid}.jpg`));
+            })
+        } else {
+            fs.mkdir('./faces', () => {
+                request(vtbInfosService.getVtbInfos().find((vtbInfo: VtbInfo) => vtbInfo.roomid === cid).face).pipe(fs.createWriteStream(`./faces/${cid}.jpg`)).on('close', () => {
+                    win.setIcon(nativeImage.createFromPath(`./faces/${cid}.jpg`));
+                })
+            })
+        }
+    }
+
+    win.on('page-title-updated', (event: Electron.Event) => {
+        event.preventDefault();
+    })
+    win.loadURL(`https://www.bilibili.com/blackboard/live/live-activity-player.html?enterTheRoom=0&cid=${cid}`);
+    win.setMenu(null);
+    win.on('close', () => {
+        if (playerObjMap.get(cid)) {
+            if (playerObjMap.get(cid).danmakuWin) {
+                playerObjMap.get(cid).danmakuWin.close();
+            }
+        }
+        playerObjMap.delete(cid);
+    });
+    return {
+        cid,
+        playerWin: win,
+        danmakuWin: null
+    }
+}
 (async () => {
     vtbInfosService = await vtbInfosInit;
     win = await mainWindowInit;
@@ -97,6 +125,16 @@ let vtbInfosService: VtbInfoService;
             })
         })
     })
+    ipcMain.on('showPlayer', (event: Electron.IpcMainEvent, cid: number) => {
+        if (playerObjMap.has(cid)) {
+            playerObjMap.get(cid).playerWin.focus();
+        } else {
+            playerObjMap.set(cid, createPlayer(cid));
+        }
+    })
+
+
+
     ipcMain.on('getVtbInfos', (event: Electron.IpcMainEvent) => {
         event.reply('getVtbInfosReply', vtbInfosService.getVtbInfos());
     });

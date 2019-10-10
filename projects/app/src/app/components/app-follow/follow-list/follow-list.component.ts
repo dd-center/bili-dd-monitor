@@ -5,6 +5,7 @@ import { FollowListService } from '../../../services/follow-list.service';
 import { VtbInfoService } from '../../../services/vtb-info.service';
 import { NzMessageService } from 'ng-zorro-antd';
 import { AppFollowComponent } from '../app-follow.component';
+import { LivePlayService } from '../../../services/live-play.service';
 @Component({
   selector: 'app-follow-list',
   templateUrl: './follow-list.component.html',
@@ -20,7 +21,7 @@ export class FollowListComponent implements OnInit {
   public followList: FollowList;
   public followedVtbInfos: VtbInfo[] = [];
   public followLists: FollowList[] = [];
-  constructor(private routeInfo: ActivatedRoute, private followListService: FollowListService, private vtbInfoService: VtbInfoService, private message: NzMessageService, private followComponent: AppFollowComponent, private zone: NgZone) { }
+  constructor(private routeInfo: ActivatedRoute, private followListService: FollowListService, private vtbInfoService: VtbInfoService, private message: NzMessageService, private followComponent: AppFollowComponent, private livePlayerService: LivePlayService, private zone: NgZone) { }
   loadData() {
     this.followListService.getFollowLists().subscribe((followLists: FollowList[]) => {
       if (this.listId == -1) {
@@ -84,6 +85,9 @@ export class FollowListComponent implements OnInit {
       this.loadData();
     })
     this.followComponent.loadData();
+  }
+  enterRoom(cid: number) {
+    this.livePlayerService.enterRoom(cid);
   }
 
 }

@@ -19,7 +19,7 @@
       <td>{{ vtbInfo.mid }}</td>
       <td>{{ vtbInfo.online }}</td>
       <td>{{ vtbInfo.title }}</td>
-      <td><a>进入直播间</a></td>
+      <td><a (click)="enterRoom(vtbInfo.roomid)">进入直播间</a></td>
     </tr>
   </tbody>
 </nz-table>

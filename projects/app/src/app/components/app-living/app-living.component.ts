@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { FollowListService } from '../../services/follow-list.service';
 import { VtbInfoService } from '../../services/vtb-info.service';
 import { VtbInfo, FollowList } from '../../../../../../interfaces';
+import { LivePlayService } from '../../services/live-play.service';
 
 @Component({
   selector: 'app-app-living',
@@ -12,7 +13,7 @@ export class AppLivingComponent implements OnInit {
   public followedVtbInfos: VtbInfo[] = [];
   private timer: any;
   public isLoading = true;
-  constructor(private followListService: FollowListService, private vtbInfoService: VtbInfoService, private zone: NgZone) {
+  constructor(private followListService: FollowListService, private vtbInfoService: VtbInfoService, private livePlayerService: LivePlayService, private zone: NgZone) {
 
   }
   loadData = () => {
@@ -36,5 +37,7 @@ export class AppLivingComponent implements OnInit {
   ngOnDestroy(): void {
     clearInterval(this.timer);
   }
-
+  enterRoom(cid: number) {
+    this.livePlayerService.enterRoom(cid);
+  }
 }

@@ -3,6 +3,7 @@ import { VtbInfoService } from '../../services/vtb-info.service';
 import { VtbInfo } from '../../../../../../interfaces';
 import { FollowListService } from '../../services/follow-list.service';
 import { FollowList } from '../../../../../../interfaces';
+import { LivePlayService } from '../../services/live-play.service';
 @Component({
   selector: 'app-app-vtbs',
   templateUrl: './app-vtbs.component.html',
@@ -11,7 +12,7 @@ import { FollowList } from '../../../../../../interfaces';
 export class AppVtbsComponent implements OnInit {
   public vtbInfos: VtbInfo[] = [];
   public followedVtbMids: number[] = [];
-  constructor(private vtbInfoService: VtbInfoService, private followListService: FollowListService, private zone: NgZone) {
+  constructor(private vtbInfoService: VtbInfoService, private followListService: FollowListService, private livePlayerService: LivePlayService, private zone: NgZone) {
 
   }
   ngOnInit() {
@@ -34,5 +35,8 @@ export class AppVtbsComponent implements OnInit {
       this.followedVtbMids = followedVtbMids;
       this.zone.run(() => { });
     })
+  }
+  enterRoom(cid: number) {
+    this.livePlayerService.enterRoom(cid);
   }
 }

@@ -13,6 +13,19 @@
   "main": "./dist/electron/src/main.js",
   "private": true,
   "dependencies": {
+    "electron-settings": "^3.2.0",
+    "ngx-electron": "^2.1.1",
+    "request": "^2.88.0",
+    "socket.io-client": "^2.3.0"
+  },
+  "devDependencies": {
+    "ng-zorro-antd": "^8.3.1",
+    "tslib": "^1.10.0",
+    "rxjs": "~6.4.0",
+    "zone.js": "~0.9.1",
+    "@types/electron-settings": "^3.1.1",
+    "@types/request": "^2.48.3",
+    "@types/socket.io-client": "^1.4.32",
     "@angular/animations": "~8.2.9",
     "@angular/common": "~8.2.9",
     "@angular/compiler": "~8.2.9",
@@ -21,17 +34,6 @@
     "@angular/platform-browser": "~8.2.9",
     "@angular/platform-browser-dynamic": "~8.2.9",
     "@angular/router": "~8.2.9",
-    "@types/electron-settings": "^3.1.1",
-    "@types/socket.io-client": "^1.4.32",
-    "electron-settings": "^3.2.0",
-    "ng-zorro-antd": "^8.3.1",
-    "ngx-electron": "^2.1.1",
-    "rxjs": "~6.4.0",
-    "socket.io-client": "^2.3.0",
-    "tslib": "^1.10.0",
-    "zone.js": "~0.9.1"
-  },
-  "devDependencies": {
     "electron": "^6.0.11",
     "@angular-devkit/build-angular": "~0.803.8",
     "@angular/cli": "~8.3.8",
@@ -56,12 +58,22 @@
   "build": {
     "productName": "BILI-DD-MONITOR",
     "appId": "com.kinori.bili_dd_monitor",
-    "copyright": "xxxx",
     "directories": {
       "output": "build"
     },
     "win": {
-      "icon": "xxx/icon.ico"
+      "icon": "./public/icon256.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "../public/icon256.ico",
+      "uninstallerIcon": "./public/icon256.ico",
+      "installerHeaderIcon": "./public/icon256.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "DD监控室"
     }
   }
 }

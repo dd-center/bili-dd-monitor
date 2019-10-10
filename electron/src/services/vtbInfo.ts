@@ -20,6 +20,6 @@ export class VtbInfoService {
 
     }
     getVtbInfos(): VtbInfo[] {
-        return [...this.vtbInfos.values()];
+        return [...this.vtbInfos.values()].sort((vtbInfoA, vtbInfoB) => vtbInfoB.online - vtbInfoA.online);
     }
 }

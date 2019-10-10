@@ -1,4 +1,4 @@
-import { Component, OnInit, ApplicationRef } from '@angular/core';
+import { Component, OnInit, ApplicationRef, NgZone } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FollowList, VtbInfo } from '../../../../../../../interfaces';
 import { FollowListService } from '../../../services/follow-list.service';
@@ -20,30 +20,28 @@ export class FollowListComponent implements OnInit {
   public followList: FollowList;
   public vtbInfos: VtbInfo[] = [];
   public followLists: FollowList[] = [];
-  constructor(private routeInfo: ActivatedRoute, private followListService: FollowListService, private vtbInfoService: VtbInfoService, private message: NzMessageService, private followComponent: AppFollowComponent) { }
+  constructor(private routeInfo: ActivatedRoute, private followListService: FollowListService, private vtbInfoService: VtbInfoService, private message: NzMessageService, private followComponent: AppFollowComponent, private zone: NgZone) { }
   loadData() {
-    if (this.listId == -1) {
-      this.followListService.getFollowLists().subscribe((followLists: FollowList[]) => {
+    this.followListService.getFollowLists().subscribe((followLists: FollowList[]) => {
+      if (this.listId == -1) {
         let followListTemp = { id: -1, name: '全部关注', mids: [] };
         this.followLists = followLists;
         followLists.forEach((followList: FollowList) => {
           followListTemp.mids = [...followListTemp.mids, ...followList.mids];
         })
         this.followList = followListTemp;
-      })
-
-    } else {
-      this.followListService.getFollowLists().subscribe((followLists: FollowList[]) => {
+      } else {
         this.followLists = followLists;
         followLists.forEach((followList: FollowList) => {
           if (followList.id == this.listId) {
             this.followList = followList;
           }
         })
+      }
+      this.vtbInfoService.getVtbInfos().subscribe((vtbInfos: VtbInfo[]) => {
+        this.vtbInfos = vtbInfos.filter((vtbInfo: VtbInfo) => this.followList.mids.includes(vtbInfo.mid))
+        this.zone.run(()=>{})
       })
-    }
-    this.vtbInfoService.getVtbInfos().subscribe((vtbInfos: VtbInfo[]) => {
-      this.vtbInfos = vtbInfos.filter((vtbInfo: VtbInfo) => this.followList.mids.includes(vtbInfo.mid))
     })
   }
   ngOnInit() {
@@ -75,6 +73,7 @@ export class FollowListComponent implements OnInit {
         this.isSetListModalVisible = false;
         this.message.success('设置成功');
         this.followComponent.loadData();
+        this.zone.run(()=>{})
       })
     } else {
       this.message.warning('请选择分组');

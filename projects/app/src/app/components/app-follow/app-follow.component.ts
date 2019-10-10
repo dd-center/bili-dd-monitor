@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { FollowListService } from '../../services/follow-list.service';
 import { FollowList } from '../../../../../../interfaces';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -17,10 +17,15 @@ export class AppFollowComponent implements OnInit {
   createListModalValue = '';
   isCreateListModalVisible = false;
   isCreateListModalOkLoading = false;
-  constructor(private router:Router,private followListService: FollowListService, private message: NzMessageService) { }
-  loadData(){
+  renameListName = '';
+  renameListId: number;
+  isRenameListModalVisible = false;
+  isRenameListModalOkLoading = false;
+  constructor(private router: Router, private followListService: FollowListService, private message: NzMessageService, private zone: NgZone) { }
+  loadData() {
     this.followListService.getFollowLists().subscribe((followLists: FollowList[]) => {
       this.followLists = followLists;
+      this.zone.run(() => { })
     })
   }
   ngOnInit() {
@@ -39,7 +44,8 @@ export class AppFollowComponent implements OnInit {
       this.followListService.deleteFollowList(id).subscribe((followLists: FollowList[]) => {
         this.followLists = followLists;
         this.message.success('分组删除成功');
-        this.router.navigateByUrl("follow/list/-1") 
+        this.router.navigateByUrl("follow/list/-1");
+        this.zone.run(() => { })
       })
     }
   }
@@ -50,16 +56,17 @@ export class AppFollowComponent implements OnInit {
   handleCreateListModalCancel() {
     this.isCreateListModalVisible = false;
   }
-  handleCreateListModalOk(value) {
+  handleCreateListModalOk() {
     if (this.followLists.length < 10) {
-      if (value.length <= 10) {
-        if (!this.followLists.map((followList: FollowList) => followList.name).includes(value)) {
+      if (this.createListModalValue.length <= 10) {
+        if (!this.followLists.map((followList: FollowList) => followList.name).includes(this.createListModalValue)) {
           this.isCreateListModalOkLoading = true;
-          this.followListService.addFollowList(value).subscribe((followLists => {
+          this.followListService.addFollowList(this.createListModalValue).subscribe((followLists => {
             this.followLists = followLists;
             this.isCreateListModalOkLoading = false;
             this.isCreateListModalVisible = false;
             this.message.success('分组创建成功');
+            this.zone.run(() => { })
           }))
         } else {
           this.message.error('分组名字重复');
@@ -71,5 +78,31 @@ export class AppFollowComponent implements OnInit {
       this.message.error('最多只能有十个分组');
     }
 
+  }
+  showRenameListModal(id: number, name: string) {
+    this.renameListId = id;
+    this.renameListName = name;
+    this.isRenameListModalVisible = true;
+  }
+  handleRenameListModalCancel() {
+    this.isRenameListModalVisible = false;
+  }
+  handleRenameListModalOk() {
+    if (this.renameListName.length <= 10) {
+      if (!this.followLists.map((followList: FollowList) => followList.name).includes(this.renameListName)) {
+        this.isRenameListModalOkLoading = true;
+        this.followListService.renameFollowList(this.renameListId, this.renameListName).subscribe((followLists => {
+          this.followLists = followLists;
+          this.isRenameListModalOkLoading = false;
+          this.isRenameListModalVisible = false;
+          this.message.success('分组名字修改成功');
+          this.zone.run(() => { })
+        }))
+      } else {
+        this.message.error('分组名字重复');
+      }
+    } else {
+      this.message.error('分组名字过长');
+    }
   }
 }

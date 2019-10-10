@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { VtbInfoService, getFollowLists, addFollowList, deleteFollowList, renameFollowList, initFollowList, follow, setFollowList } from './services';
 import { FollowList, VtbInfo } from '../../interfaces';
+import { PlayerObj } from '../../interfaces';
 const createMainWindow = (): BrowserWindow => {
     const win = new BrowserWindow({
         width: 1200,
@@ -15,17 +16,36 @@ const createMainWindow = (): BrowserWindow => {
             nodeIntegration: true,
         },
     });
-    win.loadURL('http://localhost:4200');
-    win.webContents.openDevTools();
-    // win.loadURL(`file://${__dirname}/../../app/index.html`);
+    // win.loadURL('https://www.bilibili.com/blackboard/live/live-activity-player.html?enterTheRoom=0&cid=302816');
+    // win.webContents.openDevTools();
+    win.loadURL(`file://${__dirname}/../../app/index.html`);
     win.setMenu(null);
     win.on('close', () => {
         app.quit();
     });
     return win;
 }
-const createPlayerWinodw = (): BrowserWindow => {
-    return null;
+const createPlayer = (cid:number): PlayerObj => {
+    const win = new BrowserWindow({
+        width: 1200,
+        height: 800,
+        resizable: true,
+        maximizable: true,
+        fullscreen: true,
+        fullscreenable: true,
+        webPreferences: {
+            nodeIntegration: true,
+        },
+    });
+    win.loadURL(`https://www.bilibili.com/blackboard/live/live-activity-player.html?enterTheRoom=0&cid=${cid}`);
+    win.setMenu(null);
+    win.on('close', () => {
+    });
+    return{
+        id:Date.now(),
+        playerWin:win,
+        danmakuWin:null
+    }
 }
 const mainWindowInit = new Promise<BrowserWindow>((resolve) => {
     app.on('ready', () => {
@@ -75,30 +95,30 @@ let vtbInfosService: VtbInfoService;
         })
     })
     ipcMain.on('vtbInfos', (event: Electron.IpcMainEvent) => {
-        event.reply('vtbInfosReply',vtbInfosService.getVtbInfos());
+        event.reply('vtbInfosReply', vtbInfosService.getVtbInfos());
     });
     ipcMain.on('getFollowLists', (event: Electron.IpcMainEvent) => {
-        event.reply('getFollowListsReply',getFollowLists());
+        event.reply('getFollowListsReply', getFollowLists());
     });
     ipcMain.on('addFollowList', (event: Electron.IpcMainEvent, name: string) => {
         addFollowList(name);
-        event.reply('addFollowListReply',getFollowLists());;
+        event.reply('addFollowListReply', getFollowLists());;
     });
     ipcMain.on('deleteFollowList', (event: Electron.IpcMainEvent, id: number) => {
         deleteFollowList(id);
-        event.reply('deleteFollowListReply',getFollowLists());;
+        event.reply('deleteFollowListReply', getFollowLists());;
     });
     ipcMain.on('renameFollowList', (event: Electron.IpcMainEvent, id: number, name: string) => {
         renameFollowList(id, name);
-        event.reply('renameFollowListReply',getFollowLists());;
+        event.reply('renameFollowListReply', getFollowLists());;
     });
     ipcMain.on('follow', (event: Electron.IpcMainEvent, mid: number) => {
         follow(mid);
-        event.reply('followReply',getFollowLists());;
+        event.reply('followReply', getFollowLists());;
     });
     ipcMain.on('setFollowList', (event: Electron.IpcMainEvent, mids: number[], listId: number) => {
         setFollowList(mids, listId)
-        event.reply('setFollowListReply',getFollowLists());;
+        event.reply('setFollowListReply', getFollowLists());;
     });
 })();
 

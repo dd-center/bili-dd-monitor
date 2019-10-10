@@ -18,7 +18,7 @@
           </span>
           <nz-dropdown-menu #menu nzPlacement="bottomLeft">
             <ul nz-menu style="width: 150px">
-              <li nz-menu-item>修改名称</li>
+              <li nz-menu-item (click)="showRenameListModal(list.id,list.name)">修改名称</li>
               <li nz-menu-item nz-popconfirm nzPopconfirmTitle="确定要删除该分组么？删除之后，该分组下的用户依旧保留"
                 (nzOnConfirm)="handleDeleteList(list.id)">删除</li>
             </ul>
@@ -32,6 +32,10 @@
   </div>
 </div>
 <nz-modal [(nzVisible)]="isCreateListModalVisible" nzTitle="新建分组" (nzOnCancel)="handleCreateListModalCancel()"
-  (nzOnOk)="handleCreateListModalOk(createListModalInput.value)" [nzOkLoading]="isCreateListModalOkLoading">
-  <input nz-input placeholder="最多输入10个字" [(ngModel)]="createListModalValue" #createListModalInput />
+  (nzOnOk)="handleCreateListModalOk()" [nzOkLoading]="isCreateListModalOkLoading">
+  <input nz-input placeholder="最多输入10个字" [(ngModel)]="createListModalValue" />
+</nz-modal>
+<nz-modal [(nzVisible)]="isRenameListModalVisible" nzTitle="修改分组名" (nzOnCancel)="handleRenameListModalCancel()"
+  (nzOnOk)="handleRenameListModalOk()" [nzOkLoading]="isRenameListModalOkLoading">
+  <input nz-input placeholder="最多输入10个字" [(ngModel)]="renameListName" />
 </nz-modal>

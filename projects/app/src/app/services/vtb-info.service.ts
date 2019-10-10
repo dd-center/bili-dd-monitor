@@ -6,18 +6,16 @@ import { Observable,of, Observer } from 'rxjs';
   providedIn: 'root'
 })
 export class VtbInfoService {
-  private vtbInfoObservable:Observable<VtbInfo[]>;
   constructor(private electron:ElectronService) {
-    const sequenceSubscriber = (observer:Observer<VtbInfo[]>)=>{
-      this.electron.ipcRenderer.once('vtbInfosReply',(e:Electron.IpcRendererEvent,vtbInfos:VtbInfo[])=>{
-        observer.next(vtbInfos);
-        observer.complete();
-      })
-    }
-    this.vtbInfoObservable = new Observable(sequenceSubscriber);
+  }
+  private sequenceSubscriber = (observer:Observer<VtbInfo[]>)=>{
+    this.electron.ipcRenderer.once('vtbInfosReply',(e:Electron.IpcRendererEvent,vtbInfos:VtbInfo[])=>{
+      observer.next(vtbInfos);
+      observer.complete();
+    })
   }
   getVtbInfos():Observable<VtbInfo[]>{
     this.electron.ipcRenderer.send('vtbInfos');
-    return this.vtbInfoObservable;
+    return new Observable(this.sequenceSubscriber);
   }
 }

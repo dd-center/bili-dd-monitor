@@ -54,8 +54,8 @@
     "typescript": "~3.5.3"
   },
   "build": {
-    "productName": "xxxx",
-    "appId": "com.xxx.xxxxx",
+    "productName": "BILI-DD-MONITOR",
+    "appId": "com.kinori.bili_dd_monitor",
     "copyright": "xxxx",
     "directories": {
       "output": "build"

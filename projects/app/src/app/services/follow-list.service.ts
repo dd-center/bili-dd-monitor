@@ -24,36 +24,36 @@ export class FollowListService {
             observer.next(followLists);
             observer.complete();
           })
-        }
           break;
+        }
         case 'deleteFollowListReply': {
           this.electron.ipcRenderer.once('deleteFollowListReply', (e: Electron.IpcRendererEvent, followLists: FollowList[]) => {
             observer.next(followLists);
             observer.complete();
           })
-        }
           break;
+        }
         case 'renameFollowListReply': {
           this.electron.ipcRenderer.once('renameFollowListReply', (e: Electron.IpcRendererEvent, followLists: FollowList[]) => {
             observer.next(followLists);
             observer.complete();
           })
-        }
           break;
+        }
         case 'followReply': {
           this.electron.ipcRenderer.once('followReply', (e: Electron.IpcRendererEvent, followLists: FollowList[]) => {
             observer.next(followLists);
             observer.complete();
           })
-        }
           break;
+        }
         case 'setFollowListReply': {
           this.electron.ipcRenderer.once('setFollowListReply', (e: Electron.IpcRendererEvent, followLists: FollowList[]) => {
             observer.next(followLists);
             observer.complete();
           })
-        }
           break;
+        }
       }
     })
   }

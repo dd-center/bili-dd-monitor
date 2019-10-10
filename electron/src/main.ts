@@ -2,6 +2,9 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import { VtbInfoService, getFollowLists, addFollowList, deleteFollowList, renameFollowList, initFollowList, follow, setFollowList } from './services';
 import { FollowList, VtbInfo } from '../../interfaces';
 import { PlayerObj } from '../../interfaces';
+
+let playerObjMap = new Map<number,PlayerObj>();
+
 const createMainWindow = (): BrowserWindow => {
     const win = new BrowserWindow({
         width: 1200,
@@ -16,7 +19,7 @@ const createMainWindow = (): BrowserWindow => {
             nodeIntegration: true,
         },
     });
-    // win.loadURL('https://www.bilibili.com/blackboard/live/live-activity-player.html?enterTheRoom=0&cid=302816');
+    win.loadURL('http://localhost:4200');
     // win.webContents.openDevTools();
     win.loadURL(`file://${__dirname}/../../app/index.html`);
     win.setMenu(null);

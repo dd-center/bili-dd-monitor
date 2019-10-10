@@ -11,7 +11,7 @@ import { VtbInfo, FollowList } from '../../../../../../interfaces';
 export class AppLivingComponent implements OnInit {
   public vtbInfos: VtbInfo[] = [];
   private timer: any;
-
+  public isLoading = true;
   constructor(private followListService: FollowListService, private vtbInfoService: VtbInfoService,private zone:NgZone) { 
     
   }
@@ -32,6 +32,7 @@ export class AppLivingComponent implements OnInit {
         followLists.forEach((followList: FollowList) => {
           this.vtbInfos = [...this.vtbInfos, ...vtbInfos.filter((vtbInfo: VtbInfo) => followList.mids.includes(vtbInfo.mid))]
         })
+        this.isLoading = false;
         this.zone.run(()=>{});
       })
     })

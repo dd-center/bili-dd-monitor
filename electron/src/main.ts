@@ -79,7 +79,9 @@ const createPlayer = (cid: number): PlayerObj => {
     win.on('page-title-updated', (event: Electron.Event) => {
         event.preventDefault();
     })
-    win.loadURL(`https://www.bilibili.com/blackboard/live/live-activity-player.html?enterTheRoom=0&cid=${cid}`);
+    win.loadURL(`https://www.bilibili.com/blackboard/live/live-activity-player.html?enterTheRoom=0&cid=${cid}`).then(() => {
+        win.webContents.insertCSS('.bilibili-live-player-video-logo{display:none}')
+    });
     win.setMenu(null);
     win.on('close', () => {
         if (playerObjMap.get(cid)) {

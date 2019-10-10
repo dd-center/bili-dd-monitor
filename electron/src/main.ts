@@ -75,30 +75,30 @@ let vtbInfosService: VtbInfoService;
         })
     })
     ipcMain.on('vtbInfos', (event: Electron.IpcMainEvent) => {
-        event.returnValue = vtbInfosService.getVtbInfos();
+        event.reply('vtbInfosReply',vtbInfosService.getVtbInfos());
     });
     ipcMain.on('getFollowLists', (event: Electron.IpcMainEvent) => {
-        event.returnValue = getFollowLists();
+        event.reply('getFollowListsReply',getFollowLists());
     });
     ipcMain.on('addFollowList', (event: Electron.IpcMainEvent, name: string) => {
         addFollowList(name);
-        event.returnValue = getFollowLists();;
+        event.reply('addFollowListReply',getFollowLists());;
     });
     ipcMain.on('deleteFollowList', (event: Electron.IpcMainEvent, id: number) => {
         deleteFollowList(id);
-        event.returnValue = getFollowLists();;
+        event.reply('deleteFollowListReply',getFollowLists());;
     });
     ipcMain.on('renameFollowList', (event: Electron.IpcMainEvent, id: number, name: string) => {
         renameFollowList(id, name);
-        event.returnValue = getFollowLists();;
+        event.reply('renameFollowListReply',getFollowLists());;
     });
     ipcMain.on('follow', (event: Electron.IpcMainEvent, mid: number) => {
         follow(mid);
-        event.returnValue = getFollowLists();;
+        event.reply('followReply',getFollowLists());;
     });
     ipcMain.on('setFollowList', (event: Electron.IpcMainEvent, mids: number[], listId: number) => {
         setFollowList(mids, listId)
-        event.returnValue = getFollowLists();;
+        event.reply('setFollowListReply',getFollowLists());;
     });
 })();
 

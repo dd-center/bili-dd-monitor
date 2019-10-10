@@ -15,9 +15,9 @@ const createMainWindow = (): BrowserWindow => {
             nodeIntegration: true,
         },
     });
-    // win.loadURL('http://localhost:4200');
-    // win.webContents.openDevTools();
-    win.loadURL(`file://${__dirname}/../../app/index.html`);
+    win.loadURL('http://localhost:4200');
+    win.webContents.openDevTools();
+    // win.loadURL(`file://${__dirname}/../../app/index.html`);
     win.setMenu(null);
     win.on('close', () => {
         app.quit();

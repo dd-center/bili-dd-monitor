@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { FollowListService } from '../../follow-list.service';
-import { VtbInfoService } from '../../vtb-info.service';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { FollowListService } from '../../services/follow-list.service';
+import { VtbInfoService } from '../../services/vtb-info.service';
 import { VtbInfo, FollowList } from '../../../../../../interfaces';
 
 @Component({
@@ -12,7 +12,8 @@ export class AppLivingComponent implements OnInit {
   public vtbInfos: VtbInfo[] = [];
   private timer: any;
 
-  constructor(private followListService: FollowListService, private vtbInfoService: VtbInfoService) { }
+  constructor(private followListService: FollowListService, private vtbInfoService: VtbInfoService) { 
+  }
   loadData = () => {
     this.vtbInfos = [];
     this.vtbInfoService.getVtbInfos().subscribe((vtbInfos: VtbInfo[]) => {

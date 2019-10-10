@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ElectronService } from 'ngx-electron';
-import { VtbInfo } from '../../../../interfaces';
+import { VtbInfo } from '../../../../../interfaces';
 @Injectable({
   providedIn: 'root'
 })

@@ -1,8 +1,8 @@
 import { Component, OnInit, ApplicationRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FollowList, VtbInfo } from '../../../../../../../interfaces';
-import { FollowListService } from '../../../follow-list.service';
-import { VtbInfoService } from '../../../vtb-info.service';
+import { FollowListService } from '../../../services/follow-list.service';
+import { VtbInfoService } from '../../../services/vtb-info.service';
 import { NzMessageService } from 'ng-zorro-antd';
 import { AppFollowComponent } from '../app-follow.component';
 @Component({

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FollowListService } from '../../follow-list.service';
+import { FollowListService } from '../../services/follow-list.service';
 import { FollowList } from '../../../../../../interfaces';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ActivatedRoute, Router } from '@angular/router';

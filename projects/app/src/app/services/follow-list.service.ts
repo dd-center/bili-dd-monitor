@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ElectronService } from 'ngx-electron';
-import { FollowList } from '../../../../interfaces';
+import { FollowList } from '../../../../../interfaces';
 import { Observable, of, Observer } from 'rxjs';
 @Injectable({
   providedIn: 'root'

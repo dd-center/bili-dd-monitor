@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { VtbInfoService } from '../../vtb-info.service';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { VtbInfoService } from '../../services/vtb-info.service';
 import { VtbInfo } from '../../../../../../interfaces';
-import { FollowListService } from '../../follow-list.service';
+import { FollowListService } from '../../services/follow-list.service';
 import { FollowList } from '../../../../../../interfaces';
 @Component({
   selector: 'app-app-vtbs',
@@ -9,11 +9,11 @@ import { FollowList } from '../../../../../../interfaces';
   styleUrls: ['./app-vtbs.component.css']
 })
 export class AppVtbsComponent implements OnInit {
-  vtbInfos: VtbInfo[] = [];
-  follows = [];
+  public vtbInfos: VtbInfo[] = [];
+  public follows = [];
   constructor(private vtbInfoService: VtbInfoService, private followListService: FollowListService) {
+ 
   }
-
   ngOnInit() {
     this.vtbInfoService.getVtbInfos().subscribe((vtbInfos: VtbInfo[]) => {
       this.vtbInfos = vtbInfos.sort((vtbInfoA, vtbInfoB) => vtbInfoB.online - vtbInfoA.online);

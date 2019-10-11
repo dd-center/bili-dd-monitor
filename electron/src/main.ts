@@ -4,6 +4,9 @@ import { FollowList, VtbInfo } from '../../interfaces';
 import { PlayerObj } from '../../interfaces';
 import * as request from 'request';
 import * as fs from 'fs';
+import { join } from 'path';
+const tempPath = app.getPath('temp');
+
 let playerObjMap = new Map<number, PlayerObj>();
 let win: BrowserWindow = null;
 let vtbInfosService: VtbInfoService;
@@ -60,17 +63,17 @@ const createPlayer = (cid: number): PlayerObj => {
         },
     });
 
-    if (fs.existsSync(`./faces/${cid}.jpg`)) {
-        win.setIcon(nativeImage.createFromPath(`./faces/${cid}.jpg`));
+    if (fs.existsSync(join(tempPath, `./faces/${cid}.jpg`))) {
+        win.setIcon(nativeImage.createFromPath(join(tempPath, `./faces/${cid}.jpg`)));
     } else {
-        if (fs.existsSync('./faces')) {
-            request(vtbInfosService.getVtbInfos().find((vtbInfo: VtbInfo) => vtbInfo.roomid === cid).face).pipe(fs.createWriteStream(`./faces/${cid}.jpg`)).on('close', () => {
-                win.setIcon(nativeImage.createFromPath(`./faces/${cid}.jpg`));
+        if (fs.existsSync(join(tempPath, './faces'))) {
+            request(vtbInfosService.getVtbInfos().find((vtbInfo: VtbInfo) => vtbInfo.roomid === cid).face).pipe(fs.createWriteStream(join(tempPath, `./faces/${cid}.jpg`))).on('close', () => {
+                win.setIcon(nativeImage.createFromPath(join(tempPath, `./faces/${cid}.jpg`)));
             })
         } else {
-            fs.mkdir('./faces', () => {
-                request(vtbInfosService.getVtbInfos().find((vtbInfo: VtbInfo) => vtbInfo.roomid === cid).face).pipe(fs.createWriteStream(`./faces/${cid}.jpg`)).on('close', () => {
-                    win.setIcon(nativeImage.createFromPath(`./faces/${cid}.jpg`));
+            fs.mkdir(join(tempPath, './faces'), () => {
+                request(vtbInfosService.getVtbInfos().find((vtbInfo: VtbInfo) => vtbInfo.roomid === cid).face).pipe(fs.createWriteStream(join(tempPath, `./faces/${cid}.jpg`))).on('close', () => {
+                    win.setIcon(nativeImage.createFromPath(join(tempPath, `./faces/${cid}.jpg`)));
                 })
             })
         }

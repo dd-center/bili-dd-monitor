@@ -11,7 +11,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "electron-start": "npm run build:electron && electron -p ./dist/electron/src/main.js",
+    "electron-start": "npm run build && electron -p ./dist/electron/src/main.js",
     "dist": "electron-builder",
     "release": "npm run build && npm run dist"
   },

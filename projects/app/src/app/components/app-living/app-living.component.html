@@ -1,10 +1,11 @@
 <nz-table #headerTable [nzData]="followedVtbInfos" [nzPageSize]="10" [nzScroll]="{ y: '651px' }"
-  style="padding-right: 10px" [nzLoading]="isLoading">
+  style="padding-right: 10px">
   <thead>
     <tr>
       <th nzWidth="70px">头像</th>
       <th nzWidth="180px">昵称</th>
       <th nzWidth="100px">ID</th>
+      <th nzWidth="100px">直播状态</th>
       <th nzWidth="100px">人气</th>
       <th nzWidth="350px">直播标题</th>
       <th nzWidth="120px">操作</th>
@@ -17,6 +18,10 @@
       </td>
       <td>{{ vtbInfo.uname }}</td>
       <td>{{ vtbInfo.mid }}</td>
+      <td>
+        <i *ngIf="vtbInfo.liveStatus" nz-icon nzType="play-circle" nzTheme="twotone" nzTwotoneColor="#52c41a"></i>
+        <i *ngIf="!vtbInfo.liveStatus" nz-icon nzType="stop" nzTheme="twotone" nzTwotoneColor="#f5222d"></i>
+      </td>
       <td>{{ vtbInfo.online }}</td>
       <td>{{ vtbInfo.title }}</td>
       <td><a (click)="enterRoom(vtbInfo.roomid)">进入直播间</a></td>

@@ -12,7 +12,6 @@ import { LivePlayService } from '../../services/live-play.service';
 export class AppLivingComponent implements OnInit {
   public followedVtbInfos: VtbInfo[] = [];
   private timer: any;
-  public isLoading = true;
   constructor(private followListService: FollowListService, private vtbInfoService: VtbInfoService, private livePlayerService: LivePlayService, private zone: NgZone) {
 
   }
@@ -27,7 +26,6 @@ export class AppLivingComponent implements OnInit {
   ngOnInit() {
     this.vtbInfoService.getFollowedVtbInfos().subscribe((followedVtbInfos: VtbInfo[]) => {
       this.followedVtbInfos = followedVtbInfos;
-      this.isLoading = false;
       this.zone.run(() => {
 
       })

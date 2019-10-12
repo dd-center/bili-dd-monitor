@@ -63,8 +63,12 @@
     "zone.js": "~0.9.1"
   },
   "build": {
-    "productName": "BILI-DD-MONITOR",
-    "appId": "com.kinori.bili_dd_monitor",
+    "productName": "DD监控室",
+    "appId": "com.electron.bili_dd_monitor",
+    "files": [
+      "dist",
+      "public"
+  ],
     "directories": {
       "output": "build"
     },

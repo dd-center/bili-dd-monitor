@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, nativeImage } from 'electron';
+﻿import { app, BrowserWindow, ipcMain, nativeImage } from 'electron';
 import { VtbInfoService, getFollowLists, addFollowList, deleteFollowList, renameFollowList, initFollowList, follow, setFollowList } from './services';
 import { FollowList, VtbInfo } from '../../interfaces';
 import { PlayerObj } from '../../interfaces';

@@ -1,4 +1,4 @@
-import { Menu, MenuItem, screen } from 'electron';
+import { Menu, screen } from 'electron';
 import { PlayerObj } from '../../interfaces';
 const createMainWinMenu = (app: Electron.App, players: Map<number, PlayerObj>) => {
     const primaryDisplays: Electron.Display[] = screen.getAllDisplays();

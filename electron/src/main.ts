@@ -39,9 +39,9 @@ const createMainWindow = (): BrowserWindow => {
         },
     });
     win.setResizable(false);
-    win.loadURL('http://localhost:4200');
+    // win.loadURL('http://localhost:4200');
     win.webContents.openDevTools();
-    // win.loadURL(`file://${__dirname}/../../app/index.html`);
+    win.loadURL(`file://${__dirname}/../../app/index.html`);
     win.setMenu(createMainWinMenu(app, playerObjMap));
     win.on('close', () => {
         playerObjMap.forEach((playerObj: PlayerObj) => {

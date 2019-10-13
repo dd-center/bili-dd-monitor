@@ -38,9 +38,11 @@ const createMainWindow = (): BrowserWindow => {
             nodeIntegration: true,
         },
     });
-    win.setResizable(false);
+    win.webContents.on('did-finish-load', () => {
+        win.setResizable(false);
+    })
     // win.loadURL('http://localhost:4200');
-    win.webContents.openDevTools();
+    // win.webContents.openDevTools();
     win.loadURL(`file://${__dirname}/../../app/index.html`);
     win.setMenu(createMainWinMenu(app, playerObjMap));
     win.on('close', () => {

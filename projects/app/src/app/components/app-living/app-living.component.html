@@ -1,5 +1,4 @@
-<nz-table #headerTable [nzData]="followedVtbInfos" [nzPageSize]="10" [nzScroll]="{ y: '651px' }"
-  style="padding-right: 10px">
+<nz-table #headerTable [nzData]="followedVtbInfos" [nzPageSize]="10" style="padding-right: 10px">
   <thead>
     <tr>
       <th nzWidth="70px">头像</th>
@@ -14,7 +13,7 @@
   <tbody>
     <tr *ngFor="let vtbInfo of headerTable.data">
       <td>
-        <nz-avatar [nzSize]="32" nzIcon="user" [nzSrc]="vtbInfo.face"></nz-avatar>
+        <nz-avatar [nzSize]="35" nzIcon="user" [nzSrc]="vtbInfo.face"></nz-avatar>
       </td>
       <td>{{ vtbInfo.uname }}</td>
       <td>{{ vtbInfo.mid }}</td>

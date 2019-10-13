@@ -1,6 +1,6 @@
 {
   "name": "bili-dd-monitor",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "kinori",
   "scripts": {
     "ng": "ng",
@@ -25,18 +25,18 @@
     "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.803.8",
-    "@angular/animations": "~8.2.9",
-    "@angular/cli": "~8.3.8",
-    "@angular/common": "~8.2.9",
-    "@angular/compiler": "~8.2.9",
-    "@angular/compiler-cli": "~8.2.9",
-    "@angular/core": "~8.2.9",
-    "@angular/forms": "~8.2.9",
-    "@angular/language-service": "~8.2.9",
-    "@angular/platform-browser": "~8.2.9",
-    "@angular/platform-browser-dynamic": "~8.2.9",
-    "@angular/router": "~8.2.9",
+    "@angular-devkit/build-angular": "^0.803.9",
+    "@angular/animations": "^8.2.10",
+    "@angular/cli": "^8.3.9",
+    "@angular/common": "^8.2.10",
+    "@angular/compiler": "^8.2.10",
+    "@angular/compiler-cli": "^8.2.10",
+    "@angular/core": "^8.2.10",
+    "@angular/forms": "^8.2.10",
+    "@angular/language-service": "^8.2.10",
+    "@angular/platform-browser": "^8.2.10",
+    "@angular/platform-browser-dynamic": "^8.2.10",
+    "@angular/router": "^8.2.10",
     "@types/electron-settings": "^3.1.1",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
@@ -44,7 +44,7 @@
     "@types/request": "^2.48.3",
     "@types/socket.io-client": "^1.4.32",
     "codelyzer": "^5.0.0",
-    "electron": "^6.0.11",
+    "electron": "^6.0.12",
     "electron-builder": "^21.2.0",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
@@ -68,7 +68,7 @@
     "files": [
       "dist",
       "public"
-  ],
+    ],
     "directories": {
       "output": "build"
     },

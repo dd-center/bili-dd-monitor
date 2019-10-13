@@ -1,10 +1,11 @@
 ﻿import { app, BrowserWindow, ipcMain, nativeImage } from 'electron';
-import { VtbInfoService, getFollowLists, addFollowList, deleteFollowList, renameFollowList, initFollowList, follow, setFollowList } from './services';
-import { FollowList, VtbInfo } from '../../interfaces';
-import { PlayerObj } from '../../interfaces';
 import * as request from 'request';
 import * as fs from 'fs';
 import { join } from 'path';
+import { VtbInfoService, FollowListService } from './services';
+import { FollowList, VtbInfo } from '../../interfaces';
+import { PlayerObj } from '../../interfaces';
+import { createMainWinMenu } from './mainWinMenu';
 const tempPath = app.getPath('temp');
 
 let playerObjMap = new Map<number, PlayerObj>();
@@ -27,20 +28,21 @@ const createMainWindow = (): BrowserWindow => {
     const win = new BrowserWindow({
         width: 1200,
         height: 800,
-        resizable: false,
         maximizable: false,
         fullscreen: false,
         fullscreenable: false,
+        useContentSize: true,
         icon: 'public/icon.ico',
         title: 'DD监控室',
         webPreferences: {
             nodeIntegration: true,
         },
     });
-    // win.loadURL('http://localhost:4200');
-    // win.webContents.openDevTools();
-    win.loadURL(`file://${__dirname}/../../app/index.html`);
-    win.setMenu(null);
+    win.setResizable(false);
+    win.loadURL('http://localhost:4200');
+    win.webContents.openDevTools();
+    // win.loadURL(`file://${__dirname}/../../app/index.html`);
+    win.setMenu(createMainWinMenu(app, playerObjMap));
     win.on('close', () => {
         playerObjMap.forEach((playerObj: PlayerObj) => {
             playerObj.playerWin.close();
@@ -54,6 +56,7 @@ const createPlayer = (cid: number): PlayerObj => {
     const win = new BrowserWindow({
         width: 640,
         height: 360,
+        enableLargerThanScreen: true,
         useContentSize: true,
         icon: 'public/icon.ico',
         title: vtbInfosService.getVtbInfos().find((vtbInfo: VtbInfo) => vtbInfo.roomid === cid).title,
@@ -102,10 +105,10 @@ const createPlayer = (cid: number): PlayerObj => {
 (async () => {
     vtbInfosService = await vtbInfosInit;
     win = await mainWindowInit;
-    initFollowList();
+    FollowListService.initFollowList();
     let lastLiveVtbs: number[] = [];
     vtbInfosService.onUpdate((vtbInfos) => {
-        const followVtbs = getFollowLists().map((followList: FollowList) => ([...followList.mids]))[0];
+        const followVtbs = FollowListService.getFollowLists().map((followList: FollowList) => ([...followList.mids]))[0];
         let nowLiveFollowedVtbs = vtbInfos.filter((vtbInfo: VtbInfo) => (followVtbs.includes(vtbInfo.mid) && vtbInfo.liveStatus)).map((vtbInfo: VtbInfo) => vtbInfo.mid);
         let upLiveFollowedVtbs: number[] = [];
         let downLiveFollowedVtbs: number[] = [];
@@ -144,27 +147,27 @@ const createPlayer = (cid: number): PlayerObj => {
         event.reply('getFollowedVtbMidsReply', vtbInfosService.getFollowedVtbMids());
     });
     ipcMain.on('getFollowLists', (event: Electron.IpcMainEvent) => {
-        event.reply('getFollowListsReply', getFollowLists());
+        event.reply('getFollowListsReply', FollowListService.getFollowLists());
     });
     ipcMain.on('addFollowList', (event: Electron.IpcMainEvent, name: string) => {
-        addFollowList(name);
-        event.reply('addFollowListReply', getFollowLists());;
+        FollowListService.addFollowList(name);
+        event.reply('addFollowListReply', FollowListService.getFollowLists());;
     });
     ipcMain.on('deleteFollowList', (event: Electron.IpcMainEvent, id: number) => {
-        deleteFollowList(id);
-        event.reply('deleteFollowListReply', getFollowLists());;
+        FollowListService.deleteFollowList(id);
+        event.reply('deleteFollowListReply', FollowListService.getFollowLists());;
     });
     ipcMain.on('renameFollowList', (event: Electron.IpcMainEvent, id: number, name: string) => {
-        renameFollowList(id, name);
-        event.reply('renameFollowListReply', getFollowLists());;
+        FollowListService.renameFollowList(id, name);
+        event.reply('renameFollowListReply', FollowListService.getFollowLists());;
     });
     ipcMain.on('follow', (event: Electron.IpcMainEvent, mid: number) => {
-        follow(mid);
+        FollowListService.follow(mid);
         event.reply('followReply', vtbInfosService.getFollowedVtbMids());;
     });
     ipcMain.on('setFollowList', (event: Electron.IpcMainEvent, mids: number[], listId: number) => {
-        setFollowList(mids, listId)
-        event.reply('setFollowListReply', getFollowLists());;
+        FollowListService.setFollowList(mids, listId)
+        event.reply('setFollowListReply', FollowListService.getFollowLists());;
     });
 })();
 

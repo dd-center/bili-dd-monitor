@@ -68,7 +68,15 @@ const createMainWinMenu = (app: Electron.App, players: Map<number, PlayerObj>) =
                             return autoSetPlayerBounds(display);
                         })
                     }))
-                }
+                },
+                {
+                    label: '关闭所有播放器',
+                    click: () => {
+                        players.forEach((player: PlayerObj) => {
+                            player.playerWin.close();
+                        })
+                    }
+                },
             ]
         }
 

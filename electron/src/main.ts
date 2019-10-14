@@ -2,29 +2,32 @@
 import * as request from 'request';
 import * as fs from 'fs';
 import { join } from 'path';
-import { autoUpdater, AppUpdater } from 'electron-updater';
+import { autoUpdater } from 'electron-updater';
 import { VtbInfoService, FollowListService } from './services';
 import { FollowList, VtbInfo } from '../../interfaces';
 import { PlayerObj } from '../../interfaces';
 import { createMainWinMenu } from './mainWinMenu';
-import { version } from 'punycode';
 const tempPath = app.getPath('temp');
-
 let playerObjMap = new Map<number, PlayerObj>();
 let win: BrowserWindow = null;
 let vtbInfosService: VtbInfoService;
 const mainWindowInit = new Promise<BrowserWindow>((resolve) => {
     app.on('ready', () => {
         autoUpdater.setFeedURL('https://dd.center/api/update/ddmonitor/');
-        autoUpdater.autoDownload = true;
+        // autoUpdater.setFeedURL('http://localhost:2333/api/update/ddmonitor/');
         autoUpdater.checkForUpdates();
+        autoUpdater.autoDownload = false;
+        autoUpdater.on('update-available', () => {
+            autoUpdater.downloadUpdate();
+        })
         autoUpdater.on('update-downloaded', (info) => {
             dialog.showMessageBox(win, <any>{
                 type: 'info',
                 title: '发现新版本：' + info.version,
                 message: '发现新版本：' + info.version,
                 detail: '更新内容：' + info.releaseNotes,
-                buttons: ['退出并更新', '暂不更新']
+                buttons: ['退出并更新', '暂不更新'],
+                cancelId: 1
             }).then(value => {
                 if (value.response == 0) {
                     autoUpdater.quitAndInstall();

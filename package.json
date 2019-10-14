@@ -1,6 +1,6 @@
 {
   "name": "bili-dd-monitor",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "author": "kinori",
   "scripts": {
     "ng": "ng",
@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "ngx-electron": "^2.1.1",
+    "electron-log": "^3.0.8",
     "@angular-devkit/build-angular": "^0.803.9",
     "@angular/animations": "^8.2.10",
     "@angular/cli": "^8.3.9",
@@ -74,7 +75,7 @@
       "output": "build"
     },
     "releaseInfo": {
-      "releaseName": "0.0.8",
+      "releaseName": "0.0.9",
       "releaseNotes": "部署自动更新"
     },
     "win": {

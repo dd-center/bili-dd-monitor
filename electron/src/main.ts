@@ -2,6 +2,7 @@
 import * as request from 'request';
 import * as fs from 'fs';
 import { join } from 'path';
+import { autoUpdater } from 'electron-updater';
 import { VtbInfoService, FollowListService } from './services';
 import { FollowList, VtbInfo } from '../../interfaces';
 import { PlayerObj } from '../../interfaces';
@@ -13,6 +14,8 @@ let win: BrowserWindow = null;
 let vtbInfosService: VtbInfoService;
 const mainWindowInit = new Promise<BrowserWindow>((resolve) => {
     app.on('ready', () => {
+        autoUpdater.setFeedURL('https://dd.center/api/update/ddmonitor/')
+        autoUpdater.checkForUpdates();
         resolve(createMainWindow());
     });
 });

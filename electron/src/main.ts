@@ -1,4 +1,4 @@
-﻿import { app, BrowserWindow, ipcMain, nativeImage } from 'electron';
+﻿import { app, BrowserWindow, ipcMain, nativeImage, Menu } from 'electron';
 import * as request from 'request';
 import * as fs from 'fs';
 import { join } from 'path';
@@ -44,7 +44,12 @@ const createMainWindow = (): BrowserWindow => {
     // win.loadURL('http://localhost:4200');
     // win.webContents.openDevTools();
     win.loadURL(`file://${__dirname}/../../app/index.html`);
-    win.setMenu(createMainWinMenu(app, playerObjMap));
+    const menu = createMainWinMenu(app, playerObjMap);
+    if (process.platform === 'darwin') {
+        Menu.setApplicationMenu(menu);
+    } else {
+        win.setMenu(menu);
+    }
     win.on('close', () => {
         playerObjMap.forEach((playerObj: PlayerObj) => {
             playerObj.playerWin.close();

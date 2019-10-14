@@ -7,7 +7,7 @@ import { NoticeService } from './services/notice.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(private noticeService:NoticeService){
-    
+  constructor(private noticeService: NoticeService) {
+
   }
 }

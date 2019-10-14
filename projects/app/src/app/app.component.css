@@ -2,6 +2,9 @@
     background-color: white;
     height: 800px;
 }
+.main{
+    height: 800px;
+}
 [nz-icon]{
     font-size: 20px
 }

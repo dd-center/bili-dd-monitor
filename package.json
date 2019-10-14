@@ -1,6 +1,6 @@
 {
   "name": "bili-dd-monitor",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "author": "kinori",
   "scripts": {
     "ng": "ng",
@@ -12,7 +12,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "electron-start": "npm run build && electron -p ./dist/electron/src/main.js",
-    "electron-start:dev": "npm run build:electron && electron -p ./dist/electron/src/main.js",
+    "electron-start:dev": "npm run build:electron && electron -p ./dist/electron/src/main.js --inspect=5858",
     "dist": "electron-builder",
     "release": "npm run build && npm run dist"
   },
@@ -72,6 +72,10 @@
     ],
     "directories": {
       "output": "build"
+    },
+    "releaseInfo": {
+      "releaseName": "0.0.8",
+      "releaseNotes": "部署自动更新"
     },
     "win": {
       "icon": "./public/icon256.ico"

@@ -1,12 +1,13 @@
-﻿import { app, BrowserWindow, ipcMain, nativeImage, Menu } from 'electron';
+﻿import { app, BrowserWindow, ipcMain, nativeImage, Menu, dialog } from 'electron';
 import * as request from 'request';
 import * as fs from 'fs';
 import { join } from 'path';
-import { autoUpdater } from 'electron-updater';
+import { autoUpdater, AppUpdater } from 'electron-updater';
 import { VtbInfoService, FollowListService } from './services';
 import { FollowList, VtbInfo } from '../../interfaces';
 import { PlayerObj } from '../../interfaces';
 import { createMainWinMenu } from './mainWinMenu';
+import { version } from 'punycode';
 const tempPath = app.getPath('temp');
 
 let playerObjMap = new Map<number, PlayerObj>();
@@ -14,8 +15,22 @@ let win: BrowserWindow = null;
 let vtbInfosService: VtbInfoService;
 const mainWindowInit = new Promise<BrowserWindow>((resolve) => {
     app.on('ready', () => {
-        autoUpdater.setFeedURL('https://dd.center/api/update/ddmonitor/')
+        autoUpdater.setFeedURL('https://dd.center/api/update/ddmonitor/');
+        autoUpdater.autoDownload = true;
         autoUpdater.checkForUpdates();
+        autoUpdater.on('update-downloaded', (info) => {
+            dialog.showMessageBox(win, <any>{
+                type: 'info',
+                title: '发现新版本：' + info.version,
+                message: '发现新版本：' + info.version,
+                detail: '更新内容：' + info.releaseNotes,
+                buttons: ['退出并更新', '暂不更新']
+            }).then(value => {
+                if (value.response == 0) {
+                    autoUpdater.quitAndInstall();
+                }
+            })
+        })
         resolve(createMainWindow());
     });
 });
@@ -29,21 +44,18 @@ const vtbInfosInit = new Promise<VtbInfoService>((resolve) => {
 });
 const createMainWindow = (): BrowserWindow => {
     const win = new BrowserWindow({
-        width: 1200,
-        height: 800,
+        width: 1250,
+        height: 850,
         maximizable: false,
         fullscreen: false,
         fullscreenable: false,
-        useContentSize: true,
+        resizable: false,
         icon: 'public/icon.ico',
         title: 'DD监控室',
         webPreferences: {
             nodeIntegration: true,
         },
     });
-    win.webContents.on('did-finish-load', () => {
-        win.setResizable(false);
-    })
     // win.loadURL('http://localhost:4200');
     // win.webContents.openDevTools();
     win.loadURL(`file://${__dirname}/../../app/index.html`);

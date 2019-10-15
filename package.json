@@ -1,6 +1,6 @@
 {
   "name": "bili-dd-monitor",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "author": "kinori",
   "scripts": {
     "ng": "ng",
@@ -75,8 +75,8 @@
       "output": "build"
     },
     "releaseInfo": {
-      "releaseName": "0.0.10",
-      "releaseNotes": "添加窗口持续置顶或取消置顶功能"
+      "releaseName": "0.0.11",
+      "releaseNotes": "修复关注列表bug"
     },
     "win": {
       "icon": "./public/icon256.ico"

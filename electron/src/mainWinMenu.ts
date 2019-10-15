@@ -1,6 +1,6 @@
 import { Menu, screen } from 'electron';
 import { PlayerObj } from '../../interfaces';
-const createMainWinMenu = (app: Electron.App, players: Map<number, PlayerObj>) => {
+export const createMainWinMenu = (app: Electron.App, players: Map<number, PlayerObj>) => {
     const primaryDisplays: Electron.Display[] = screen.getAllDisplays();
     const autoSetPlayerBounds = (display: Electron.Display) => {
         const displayProportion = display.size.height / display.size.width;
@@ -35,7 +35,7 @@ const createMainWinMenu = (app: Electron.App, players: Map<number, PlayerObj>) =
             })
         }
     }
-    const template = [// { role: 'appMenu' }
+    const template = [
         ...(process.platform === 'darwin' ? [{
             label: app.getName(),
             submenu: [
@@ -53,10 +53,18 @@ const createMainWinMenu = (app: Electron.App, players: Map<number, PlayerObj>) =
             label: '播放器',
             submenu: [
                 {
-                    label: '置顶显示所有播放器',
+                    label: '置顶显示当前所有播放器',
                     click: () => {
                         players.forEach((player: PlayerObj) => {
-                            player.playerWin.focus();
+                            player.playerWin.setAlwaysOnTop(true);
+                        })
+                    }
+                },
+                {
+                    label: '取消置顶',
+                    click: () => {
+                        players.forEach((player: PlayerObj) => {
+                            player.playerWin.setAlwaysOnTop(false);
                         })
                     }
                 },
@@ -82,7 +90,4 @@ const createMainWinMenu = (app: Electron.App, players: Map<number, PlayerObj>) =
 
     ];
     return Menu.buildFromTemplate(<any>template);
-}
-export {
-    createMainWinMenu
 }

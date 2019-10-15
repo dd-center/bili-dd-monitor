@@ -1,6 +1,6 @@
 {
   "name": "bili-dd-monitor",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "author": "kinori",
   "scripts": {
     "ng": "ng",
@@ -25,8 +25,6 @@
     "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
-    "ngx-electron": "^2.1.1",
-    "electron-log": "^3.0.8",
     "@angular-devkit/build-angular": "^0.803.9",
     "@angular/animations": "^8.2.10",
     "@angular/cli": "^8.3.9",
@@ -48,6 +46,7 @@
     "codelyzer": "^5.0.0",
     "electron": "^6.0.12",
     "electron-builder": "^21.2.0",
+    "electron-log": "^3.0.8",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.1.0",
@@ -56,6 +55,7 @@
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
     "ng-zorro-antd": "^8.3.1",
+    "ngx-electron": "^2.1.1",
     "protractor": "~5.4.0",
     "rxjs": "~6.4.0",
     "ts-node": "~7.0.0",
@@ -75,8 +75,8 @@
       "output": "build"
     },
     "releaseInfo": {
-      "releaseName": "0.0.9",
-      "releaseNotes": "部署自动更新"
+      "releaseName": "0.0.10",
+      "releaseNotes": "添加窗口持续置顶或取消置顶功能"
     },
     "win": {
       "icon": "./public/icon256.ico"

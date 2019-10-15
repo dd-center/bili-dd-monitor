@@ -42,6 +42,7 @@ const ipcInit = () => {
         event.reply('getFollowedVtbMidsReply', vtbInfosService.getFollowedVtbMids());
     });
     ipcMain.on('getFollowLists', (event: Electron.IpcMainEvent) => {
+        console.log(FollowListService.getFollowLists())
         event.reply('getFollowListsReply', FollowListService.getFollowLists());
     });
     ipcMain.on('addFollowList', (event: Electron.IpcMainEvent, name: string) => {

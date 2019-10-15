@@ -16,7 +16,9 @@ export const createMainWin = (app: Electron.App, playerObjMap: Map<number, Playe
             nodeIntegration: true,
         },
     });
+    // win.loadURL('http://127.0.0.1:4200')
     win.loadURL(`file://${__dirname}/../../app/index.html`);
+    // win.webContents.openDevTools();
     const menu = createMainWinMenu(app, playerObjMap);
     if (process.platform === 'darwin') {
         Menu.setApplicationMenu(menu);

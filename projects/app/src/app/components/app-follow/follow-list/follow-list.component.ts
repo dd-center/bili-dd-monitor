@@ -40,7 +40,7 @@ export class FollowListComponent implements OnInit {
         })
       }
       this.vtbInfoService.getFollowedVtbInfos().subscribe((followedVtbInfos: VtbInfo[]) => {
-        this.followedVtbInfos = followedVtbInfos;
+        this.followedVtbInfos = followedVtbInfos.filter((vtbInfo: VtbInfo) => this.followList.mids.includes(vtbInfo.mid));
         this.zone.run(() => { })
       })
     })

@@ -24,13 +24,13 @@ export class AppLivingComponent implements OnInit {
     })
   }
   ngOnInit() {
-    this.vtbInfoService.getFollowedVtbInfos().subscribe((followedVtbInfos: VtbInfo[]) => {
-      this.followedVtbInfos = followedVtbInfos;
+    this.loadData();
+    this.vtbInfoService.updateVtbInfos().subscribe((vtbInfos: VtbInfo[]) => {
+      this.followedVtbInfos = vtbInfos;
       this.zone.run(() => {
 
       })
     })
-    this.timer = setInterval(this.loadData, 2000);
   }
   ngOnDestroy(): void {
     clearInterval(this.timer);

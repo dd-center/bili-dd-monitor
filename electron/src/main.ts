@@ -42,7 +42,6 @@ const ipcInit = () => {
         event.reply('getFollowedVtbMidsReply', vtbInfosService.getFollowedVtbMids());
     });
     ipcMain.on('getFollowLists', (event: Electron.IpcMainEvent) => {
-        console.log(FollowListService.getFollowLists())
         event.reply('getFollowListsReply', FollowListService.getFollowLists());
     });
     ipcMain.on('addFollowList', (event: Electron.IpcMainEvent, name: string) => {
@@ -80,7 +79,8 @@ const appInit = () => {
     let lastLiveVtbs: number[] = [];
     vtbInfosService.onUpdate((vtbInfos) => {
         if (mainWin) {
-            const followVtbs = FollowListService.getFollowLists().map((followList: FollowList) => ([...followList.mids]))[0];
+            const followVtbs = vtbInfosService.getFollowedVtbMids();
+            mainWin.webContents.send('updateVtbInfos', vtbInfosService.getFollowedVtbInfos());
             let nowLiveFollowedVtbs = vtbInfos.filter((vtbInfo: VtbInfo) => (followVtbs.includes(vtbInfo.mid) && vtbInfo.liveStatus)).map((vtbInfo: VtbInfo) => vtbInfo.mid);
             let upLiveFollowedVtbs: number[] = [];
             let downLiveFollowedVtbs: number[] = [];
@@ -106,8 +106,6 @@ const appInit = () => {
     ipcInit();
 }
 app.once('ready', () => {
+    mainWin = createMainWin(app, playerObjMap)
     appInit();
-    vtbInfosService.onceUpdate(() => {
-        createMainWin(app, playerObjMap)
-    })
 })

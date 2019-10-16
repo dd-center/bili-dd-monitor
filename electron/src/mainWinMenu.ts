@@ -25,12 +25,9 @@ export const createMainWinMenu = (app: Electron.App, players: Map<number, Player
             [...players.values()].forEach((player: PlayerObj, index: number) => {
                 const row = Math.floor(index / Math.ceil(playerNum / betterRowNumber));
                 const col = index % Math.ceil(playerNum / betterRowNumber);
-                console.log(`${row} ${col}`)
                 try {
                     player.playerWin.setBounds({ x: display.bounds.x + col * playerWidth, y: display.bounds.y + row * playerHeight, height: playerHeight, width: playerWidth })
                 } catch (e) {
-                    console.log(e);
-                    console.log({ x: display.bounds.x + col * playerWidth, y: display.bounds.y + row * playerHeight, height: playerHeight, width: playerWidth })
                 }
             })
         }

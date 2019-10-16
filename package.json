@@ -1,6 +1,6 @@
 {
   "name": "bili-dd-monitor",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "author": "kinori",
   "scripts": {
     "ng": "ng",
@@ -75,8 +75,8 @@
       "output": "build"
     },
     "releaseInfo": {
-      "releaseName": "0.0.11",
-      "releaseNotes": "修复关注列表bug"
+      "releaseName": "0.0.12",
+      "releaseNotes": "优化直播状态更新，修复上下播提醒bug"
     },
     "win": {
       "icon": "./public/icon256.ico"

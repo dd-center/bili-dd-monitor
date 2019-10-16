@@ -32,8 +32,16 @@ export class VtbInfoService {
           })
           break;
         }
+        case 'updateVtbInfos': {
+          this.electron.ipcRenderer.on('updateVtbInfos', ((event: Electron.Event, vtbInfos: VtbInfo[]) => {
+            observer.next(vtbInfos);
+          }))
+        }
       }
     }
+  }
+  updateVtbInfos(): Observable<VtbInfo[]> {
+    return new Observable(this.sequenceSubscriber('updateVtbInfos'));
   }
   getVtbInfos(): Observable<VtbInfo[]> {
     this.electron.ipcRenderer.send('getVtbInfos');

@@ -21,6 +21,9 @@ export class VtbInfoService {
             }
         })
     }
+    stop() {
+        this.update = null;
+    }
     onceUpdate(callback: (vtbInfos: VtbInfo[]) => void) {
         this._onceUpdate = callback;
     }

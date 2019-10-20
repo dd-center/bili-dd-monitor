@@ -1,6 +1,6 @@
 {
   "name": "bili-dd-monitor",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "author": "kinori",
   "scripts": {
     "ng": "ng",
@@ -19,6 +19,7 @@
   "main": "./dist/electron/src/main.js",
   "private": true,
   "dependencies": {
+    "@types/got": "^9.6.7",
     "electron-settings": "^3.2.0",
     "electron-updater": "^4.1.2",
     "request": "^2.88.0",
@@ -75,8 +76,8 @@
       "output": "build"
     },
     "releaseInfo": {
-      "releaseName": "0.0.12",
-      "releaseNotes": "优化直播状态更新，修复上下播提醒bug"
+      "releaseName": "0.0.13",
+      "releaseNotes": "轮播不在显示为直播，可以设置启动时是否提醒正在进行的直播"
     },
     "win": {
       "icon": "./public/icon256.ico"

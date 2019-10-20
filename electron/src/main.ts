@@ -1,5 +1,5 @@
 ﻿import { app, BrowserWindow, dialog, ipcMain } from 'electron';
-import { VtbInfoService, FollowListService } from './services';
+import { VtbInfoService, FollowListService, Setting } from './services';
 import { PlayerObj } from '../../interfaces';
 import { autoUpdater } from 'electron-updater';
 import { FollowList, VtbInfo } from '../../interfaces';
@@ -71,17 +71,26 @@ const ipcInit = () => {
             playerObjMap.set(cid, createPlayerWin(app, vtbInfosService.getVtbInfos().find((vtbInfo: VtbInfo) => vtbInfo.roomid == cid), playerObjMap, vtbInfosService));
         }
     })
+    ipcMain.on('setIsNotifiedOnStart', (event: Electron.IpcMainEvent, isNotifiedOnStart: boolean) => {
+        event.reply('setIsNotifiedOnStartReply', Setting.setIsNotifiedOnStart(isNotifiedOnStart));
+    })
+    ipcMain.on('getIsNotifiedOnStart', (event: Electron.IpcMainEvent) => {
+        event.reply('getIsNotifiedOnStartReply', Setting.getIsNotifiedOnstart());
+    })
 }
 const appInit = () => {
     updateInit();
     vtbInfosService = new VtbInfoService();
     FollowListService.initFollowList();
     let lastLiveVtbs: number[] = [];
+    mainWin.on('close', () => {
+        vtbInfosService.stop();
+    })
     vtbInfosService.onUpdate((vtbInfos) => {
         if (mainWin) {
             const followVtbs = vtbInfosService.getFollowedVtbMids();
             mainWin.webContents.send('updateVtbInfos', vtbInfosService.getFollowedVtbInfos());
-            let nowLiveFollowedVtbs = vtbInfos.filter((vtbInfo: VtbInfo) => (followVtbs.includes(vtbInfo.mid) && vtbInfo.liveStatus)).map((vtbInfo: VtbInfo) => vtbInfo.mid);
+            let nowLiveFollowedVtbs = vtbInfos.filter((vtbInfo: VtbInfo) => (followVtbs.includes(vtbInfo.mid) && vtbInfo.liveStatus == 1)).map((vtbInfo: VtbInfo) => vtbInfo.mid);
             let upLiveFollowedVtbs: number[] = [];
             let downLiveFollowedVtbs: number[] = [];
             nowLiveFollowedVtbs.forEach(nowLiveFollowedVtb => {
@@ -94,12 +103,14 @@ const appInit = () => {
                     downLiveFollowedVtbs.push(lastLiveVtb);
                 }
             })
-            upLiveFollowedVtbs.forEach((mid: number) => {
-                mainWin.webContents.send('liveNotice', vtbInfos.find((vtbInfo: VtbInfo) => vtbInfo.mid == mid), "上播提醒")
-            })
-            downLiveFollowedVtbs.forEach((mid: number) => {
-                mainWin.webContents.send('liveNotice', vtbInfos.find((vtbInfo: VtbInfo) => vtbInfo.mid == mid), "下播提醒")
-            })
+            if ((lastLiveVtbs.length != 0) || (Setting.getIsNotifiedOnstart() == true)) {
+                upLiveFollowedVtbs.forEach((mid: number) => {
+                    mainWin.webContents.send('liveNotice', vtbInfos.find((vtbInfo: VtbInfo) => vtbInfo.mid == mid), "上播提醒")
+                })
+                downLiveFollowedVtbs.forEach((mid: number) => {
+                    mainWin.webContents.send('liveNotice', vtbInfos.find((vtbInfo: VtbInfo) => vtbInfo.mid == mid), "下播提醒")
+                })
+            }
             lastLiveVtbs = nowLiveFollowedVtbs;
         }
     })

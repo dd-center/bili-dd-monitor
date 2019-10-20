@@ -17,11 +17,12 @@
         </ng-template>
         <ng-template #enterRoomAction><a (click)="enterRoom(vtbInfo.roomid)">进入直播间</a></ng-template>
         <ng-template #contentOnline>
-          <nz-tag *ngIf="vtbInfo.liveStatus" [nzColor]="'green'">online <i nz-icon nzType="fire" nzTheme="outline"></i>
+          <nz-tag *ngIf="vtbInfo.liveStatus==1" [nzColor]="'green'">online <i nz-icon nzType="fire"
+              nzTheme="outline"></i>
             {{vtbInfo.online}}</nz-tag>
         </ng-template>
         <ng-template #contentOffline>
-          <nz-tag *ngIf="!vtbInfo.liveStatus" [nzColor]="'red'">offline</nz-tag>
+          <nz-tag *ngIf="vtbInfo.liveStatus!=1" [nzColor]="'red'">offline</nz-tag>
         </ng-template>
         <nz-list-item-meta *ngIf="vtbInfo" [nzTitle]="nzTitle" [nzAvatar]="nzAvatar" [nzDescription]="vtbInfo.sign">
           <ng-template #nzAvatar>

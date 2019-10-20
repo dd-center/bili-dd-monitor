@@ -18,8 +18,8 @@
       <td>{{ vtbInfo.uname }}</td>
       <td>{{ vtbInfo.mid }}</td>
       <td>
-        <i *ngIf="vtbInfo.liveStatus" nz-icon nzType="play-circle" nzTheme="twotone" nzTwotoneColor="#52c41a"></i>
-        <i *ngIf="!vtbInfo.liveStatus" nz-icon nzType="stop" nzTheme="twotone" nzTwotoneColor="#f5222d"></i>
+        <i *ngIf="vtbInfo.liveStatus==1" nz-icon nzType="play-circle" nzTheme="twotone" nzTwotoneColor="#52c41a"></i>
+        <i *ngIf="vtbInfo.liveStatus!=1" nz-icon nzType="stop" nzTheme="twotone" nzTwotoneColor="#f5222d"></i>
       </td>
       <td>{{ vtbInfo.online }}</td>
       <td>{{ vtbInfo.title }}</td>

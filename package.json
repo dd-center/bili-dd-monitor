@@ -34,7 +34,7 @@
     "@angular/compiler-cli": "^8.2.10",
     "@angular/core": "^8.2.10",
     "@angular/forms": "^8.2.10",
-    "@angular/language-service": "^8.2.10",
+    "@angular/language-service": "^8.2.13",
     "@angular/platform-browser": "^8.2.10",
     "@angular/platform-browser-dynamic": "^8.2.10",
     "@angular/router": "^8.2.10",

@@ -9,7 +9,7 @@ exports.default = ({ electronPlatformName, appOutDir, packager }) => {
   const appName = packager.appInfo.productFilename
 
   return notarize({
-    appBundleId: 'com.electron.bili_dd_monitor',
+    appBundleId: 'com.electron.biliddmonitor',
     appPath: `${appOutDir}/${appName}.app`,
     appleId: process.env.APPLEID,
     appleIdPassword: process.env.APPLEIDPASS

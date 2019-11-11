@@ -41,7 +41,7 @@
     "@types/electron-settings": "^3.1.1",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "~8.9.4",
+    "@types/node": "~12.12.7",
     "@types/request": "^2.48.3",
     "@types/socket.io-client": "^1.4.32",
     "codelyzer": "^5.0.0",

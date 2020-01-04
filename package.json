@@ -1,6 +1,6 @@
 {
   "name": "bili-dd-monitor",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "author": "kinori",
   "scripts": {
     "ng": "ng",
@@ -77,8 +77,8 @@
       "output": "build"
     },
     "releaseInfo": {
-      "releaseName": "0.0.13",
-      "releaseNotes": "轮播不在显示为直播，可以设置启动时是否提醒正在进行的直播"
+      "releaseName": "0.0.14",
+      "releaseNotes": "点击上播提醒可跳转到直播间"
     },
     "win": {
       "icon": "./public/icon256.ico"

@@ -15,7 +15,7 @@ export class NoticeService {
         actions: [],
       })
       notification.onclick = () => {
-
+        this.electron.ipcRenderer.send('showPlayer', vtbInfo.roomid);
       }
     })
   }
